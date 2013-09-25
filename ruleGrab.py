@@ -11,19 +11,26 @@ class Rules(object):
         """
         self._filename = filename
         self.xml=minidom.parse(self._filename)
-        self.rules=self.xml.getElementsByTagName("rule")
+        self.rulesXML=self.xml.getElementsByTagName("rule")
+        self.rules={}
+        for i in self.rulesXML:
+            for j in i.childNodes:
+                if len( j.childNodes)!=0 and  j.childNodes[0].nodeType==j.TEXT_NODE:
+                    r= i.attributes["name"].value
+                    b="??"
+                    try:
+                        b=i.attributes["book"].value
+                    except KeyError:
+                        pass
+                    k=j.childNodes[0].nodeValue+"(Source: %s)"%b
+                    self.rules[r]=k
+
 if __name__ == '__main__':
     r=Rules("/home/james/bin/battlescribe_/catalogues/Eldar.cat")
+    for i in r.rules:
+        print """[%s] %s \n"""%(i,r.rules[i])
     #print len(r.rules)
     #print r.rules[0].attributes["name"].value
-    for i in r.rules:
-        print i.attributes["name"].value
-        for j in i.childNodes:
-            if len( j.childNodes)!=0 and  j.childNodes[0].nodeType==j.TEXT_NODE:
-                k=j.childNodes[0]
-                print k.nodeValue
-
-                print "\n","="*10
 
 
             

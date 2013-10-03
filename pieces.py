@@ -1,9 +1,10 @@
+from ruleGrab import Rules
 validWeaponTypes=["shooting","melee"]
 class Weapon(object):
     """
     """
     
-    def __init__(self, name, strength,ap, weaponType, shots=1,specialRules=[],hitExtras="",woundExtras="", wielder=None):
+    def __init__(self, name, range, strength,ap, weaponType, shots=1,specialRules=None,hitExtras="",woundExtras="", wielder=None):
         """
         
         Arguments:
@@ -14,17 +15,32 @@ class Weapon(object):
         self.type=weaponType
         if not self.type in validWeaponTypes:
             raise TypeError("Weapon type must be one of %s"%str(validWeaponTypes))
+        self.range=range
         self.name=name
         self.strength = strength
         self.ap = ap
-        self.specialRules=specialRules
+        self.specialRules=[]
+        for i in specialRules:
+            self.addSpecialRule(i)
         self.hitExtras=hitExtras
         self.woundExtras=woundExtras
+    def addSpecialRule(self,rule):
+        if rule in self.specialRules:
+            return
+        else:
+            self.specialRules.append(rule)
+            if rule=="Sniper":
+                self.addSpecialRule("Pinning")
+                self.addSpecialRule("Rending")
+        
     def woundProfile(self):
-        return """\\begin{{tabular}}{{|l|l|l|l|l|l|l|l|l|l|l|}}
-        Target Toughness & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\\\ \\hline
-        Min. Roll & {0}
-        \\end{{tabular}}""".format(" & ".join([str(shootToWoundIndividual(self.strength,n+1)) for n in range(10)]))
+        toWound=" & ".join([str(shootToWoundIndividual(self.strength,n+1)) for n in range(10)])
+        if "Sniper" in self.specialRules:
+            toWound=" & ".join(["4"]*10)
+        return """\\begin{{tabular}}{{l|l|l|l|l|l|l|l|l|l|l|}}
+        \\begin{{turn}}{{90}}T\\end{{turn}} & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\\\ \\hline
+                \\begin{{turn}}{{90}}Roll\\end{{turn}} & {0}
+        \\end{{tabular}}""".format(toWound)
     def canShootAfterMoving(self):
         if "Assault" in self.specialRules:
             return "Fire as normal, can assault"
@@ -66,9 +82,10 @@ class Model(object):
     """
     """
     
-    def __init__(self, name,bs,ws,s,t,w,a,ld,sv,inv, rerollHits="", rerollWounds="",rerollSaves=""):
+    def __init__(self, name,bs,ws,s,t,w,i,a,ld,sv,inv="-", rerollHits="", rerollWounds="",rerollSaves="",rules=None, modelType="Infantry"):
         """
         """
+        self.type=modelType
         self.name=name
         self.bs=bs
         self.ws=ws
@@ -76,6 +93,7 @@ class Model(object):
         self.t=t
         self.w=w
         self.a=a
+        self.i=i
         self.ld=ld
         self.sv=sv
         self.inv=inv
@@ -83,6 +101,12 @@ class Model(object):
         self.rerollWounds=rerollWounds
         self.rerollSaves= rerollSaves
         self.weapons=[]
+        if rules!=None:
+            self.rules=rules
+        else:
+            self.rules=[]
+    def addRule(self,rule):
+        self.rules.append(rule)
     def addWeapon(self,w):
         w.wielder=self
         self.weapons.append(w)
@@ -95,47 +119,117 @@ class Model(object):
             out.append(shootToWoundIndividual(self.s,(i+1)))
         return "| %11s "%"Toughness"+" ".join(["| %2d"%(n+1) for n in range(len(out))]) + " |\n"+"+"+"-"*13+"+----"*len(out)+"+\n"+"| %11s "%"Min roll"+" ".join(["| %2d"%(n) for n in out])+" |"
 
-    def createSheet(self):
-        weaponProfiles=""
+    def createSheet(self,r):
+        meleeCount=0
+        assaultWeapons=""
+        weaponProfilesShooting=""
         for w in self.weapons:
             if w.type=="shooting":
-                weaponProfiles+="""\\subsection{{{0.name}}}
+                weaponProfilesShooting+=""" \\subsection{{{0.name}}}
                 \\begin{{description}}
+                \\item[Range]{range}\"
                 \\item[Shots]{0.shots}
                 \\item[Strength]{0.strength}
-                \\item[AP]{0.ap}
-                \\item[Special rules]{rules}
+                \\item[AP]{0.ap}{apExtra}
                 \\item[Move/Fire/Assault]{assault}
                 \\end{{description}}
-                {wounding}""".format(w,rules="|".join(w.specialRules),wounding=w.woundProfile(), assault=w.canShootAfterMoving())
-        out= """\\documentclass[12pt,a4paper]{{article}}
+                
+                {wounding}
+                \\subsubsection{{Weapon Rules}}
+                {rules}
+                \\hrule
+                """.format(w,rules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(i,r[i]) for i in w.specialRules])),wounding=w.woundProfile(), assault=w.canShootAfterMoving(), range=w.range, apExtra={True:"/(2 on a 'to wound' roll of 6 - Rending)", False:""}["Rending" in w.specialRules])
+            if w.type=="melee" or "Pistol" in w.specialRules:
+                meleeCount+=1
+            if "Specialist Weapon" in w.specialRules:
+                meleeCount+=1000
+            if w.type=="melee":# or "Pistol" in w.specialRules:
+                strength=w.strength
+                strength= str(strength).strip()
+                if strength[0]=="+":
+                    strength=strength+" (Total: %d)"%(int(self.s)+int(strength[1:]))
+                assaultWeapons+=""" \\subsubsection{{{0.name}}}
+                \\begin{{description}}
+                \\item[Strength]{s}
+                \\item[AP]{0.ap}
+                \\end{{description}}
+                \\subsubsection{{Weapon Rules}}
+                {rules}
+                \\hrule
+                """.format(w,s=strength,rules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(i,r[i]) for i in w.specialRules])))
+        if 1000<=meleeCount<2000 or meleeCount in [0,1]:
+            meleeCount=0
+        else:
+            meleeCount=1
+
+
+        profileAssault="""\\begin{{description}}
+        \\item[Attacks]{attacks} (Remember to add an attack if charging) {extraAttacks} {hammerExtra}
+        \\end{{description}}
+        \\subsection{{Assault Weapons}}
+        Does not include pistols. See above.
+        {weapons}
+        """.format(attacks=self.a+meleeCount, extraAttacks={True:"(Includes dual wielding bonus)",False:""}[meleeCount==1],weapons=assaultWeapons, hammerExtra={True:"(Remember to resolve \\textbf{Hammer of Wrath} wounds too)",False:""}["Hammer of Wrath" in self.rules])
+
+        specialRules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(i,r[i]) for i in self.rules]))
+        out= """\\documentclass[10pt,a4paper,twocolumn]{{article}}
         \\title{{{0.name}}}
         \\author{{}} \\date{{}}
-        \\usepackage{{geometry}}
+        \\usepackage[width=6.5in,height=8.5in]{{geometry}}
+        \\usepackage{{multicol}}
+        \\usepackage{{sectionbox}}
+        \\usepackage{{rotating}}
         \\begin{{document}}
         \\maketitle
-        \\section{{Basic}}
-        \\begin{{tabular}}{{p{{7mm}}p{{7mm}}p{{7mm}}p{{7mm}}p{{7mm}}p{{7mm}}p{{7mm}}p{{7mm}}p{{7mm}}}}
+        \\begin{{sectionbox}}{{Basic}}
+        \\begin{{tabular}}{{p{{2ex}}p{{2ex}}p{{2ex}}p{{2ex}}p{{2ex}}p{{2ex}}p{{2ex}}p{{2ex}}p{{2ex}}}}
          Bs & Ws & S & T & W & A & Ld & Sv & Inv \\\\ \\hline
          {0.bs} & {0.ws} & {0.s} & {0.t} & {0.w} & {0.a} & {0.ld} & {0.sv} & {0.inv}         
         \\end{{tabular}}
+        \\end{{sectionbox}}
         \\section{{Shooting}}
         \\begin{{description}}
         \\item[To hit:] {toHit} {0.rerollHits}
         \\end{{description}}
-        {profiles}
+        {shootingProfiles}
+        \\section{{Assault}}
+        {assaultProfile}
+        \\section{{Special Rules}}
+        %\\begin{{multicols}}{{2}}
+        {rules}
+        %\\end{{multicols}}
+
         \\end{{document}}
-        """.format(self,toHit=self.shootToHit(),profiles=weaponProfiles)
+        """.format(self,toHit=self.shootToHit(),shootingProfiles=weaponProfilesShooting, rules=specialRules, assaultProfile=profileAssault)
         return out
 
 
 #TODO: bladestom in reroll info
-sm=Model("Bog Standard Marine", 3,3,3,4,1,1,7,3,"-")
-guardian=Model("Eldar Guardian",4,3,3,3,1,1,7,5,"-")
-guardian.addWeapon(Weapon("Shuriken Catapult",3,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"]))
 
-guardian.addWeapon(Weapon("Shuriken Catapult crap",1,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"]))
-guardian.addWeapon(Weapon("Shuriken Catapult awesome",10,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"]))
+pathfinder=Model("Pathfinder",4,4,3,3,1,5,1,8,5)
+for n in ["Ancient Doom", "Battle Focus", "Bladestorm", "Fleet", "Infiltrate", "Move Through Cover", "Sharpshoot", "Shrouded", "Stealth"]:
+    pathfinder.addRule(n) 
+shuP=Weapon("Shuriken Pistol",12,4,5,"shooting",1,specialRules=["Pistol", "Bladestorm"])
+pathfinder.addWeapon(Weapon("Ranger Long Rifle",36,"X",6,"shooting",1,specialRules=["Heavy","Sniper"]))
+scorpionCS=Weapon("Scorpion Chainsword","-","+1",6,"melee",specialRules=["Melee"])
+
+pathfinder.addWeapon(shuP)
+pathfinder.addWeapon(scorpionCS)
+    
+# #        
+
+#sm=Model("Bog Standard Marine", 3,3,3,4,1,1,7,3)
+# guardian=Model("Eldar Guardian",4,3,3,3,1,1,7,5)
+# guardian.addRule("Battle Focus")
+# guardian.addRule("Girly Space Elf")
+# guardian.addWeapon(Weapon("Shuriken Catapult",12,3,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"]))
+# guardian.addWeapon(Weapon("Shuriken Catapult crap",12,1,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"]))
+# guardian.addWeapon(Weapon("Shuriken Catapult awesome",12,10,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"]))
+
+r=Rules("/home/james/tmp/easyList/rules.r")
+
+
 #print shootToHit(9)
 #print shootToWound(4)
-print guardian.createSheet()
+print pathfinder.createSheet(r)
+#print guardian.createSheet(r)

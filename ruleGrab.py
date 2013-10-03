@@ -14,15 +14,38 @@ class Rules(object):
         - `filename`:
         """
         self.rules={}
+        self.fn=fn
         if fn!=None:
             self.rules=pickle.load(open(fn,"r"))
         if data!=None:
             self.rules=data
-    def save(self,fn):
+    def save(self,fn=None):
+        if fn==None and self.fn!=None:
+            fn=self.fn
+        else:
+            raise Exception("No filename given")
         f=open(fn,"w")
         pickle.dump(self.rules,f)
         f.close()
+    def __iter__(self, ):
+        """
+        """
+        return self.rules.__iter__()
+
+    def __getitem__(self,key):
+        if self.rules.has_key(key):
+            return self.rules[key].encode("ASCII", errors='replace')
+        else:
+            return "Unknown rule"
+    def __setitem__(self, key,value):
+        """
         
+        Arguments:
+        - `key`:
+        - `value`:
+        """
+        self.rules[key]=value
+
     def __repr__(self):
         return "Rules(data=%s)"%self.rules.__repr__()
     def load(self,filename):
@@ -104,7 +127,8 @@ def loadHelper(rules,cat):
                     print "Enter A or B. Try again."
 if __name__ == '__main__':
     r=Rules("/home/james/tmp/easyList/rules.r")
-    
+    # r["Assault"]="A weapon that can be fired in the shooting phase without preventing the firer from assaulting in the assault phase"
+    # r.save()
     # cats=["ChaosSpaceMarines.cat", "Dark_Angels_6th_FAQ_1-13-2013.cat", "Eldar - 2013.cat", "Eldar.cat", "Fortifications.cat", "Orks 6th Ed (2008).cat"]
     # prefix="/home/james/bin/battlescribe_/catalogues/"
     # for cat in cats:
@@ -113,16 +137,15 @@ if __name__ == '__main__':
     #     #cat="/home/james/bin/battlescribe_/catalogues/Eldar.cat"
     #     loadHelper(r,cat)
     #     #break
-    # print "-"    
-    for i in r.rules:
-        #try:
-        sanitised=r.rules[i].encode("ASCII", errors='replace')
-        print """[%s] %s \n"""%(i,sanitised)
-        # except:
-        #     print "WHOOPS!"
+    # print "-"
+    #    print r["Assault"]
+    loadHelper(r,"/home/james/bin/battlescribe_/previous_version/catalogues/Eldar.cat")
+    for i in r:
+        
+        print """[%s] %s \n"""%(i,r[i])
         print "-"*20
 
-    # r.save("/home/james/tmp/rules.r")
+    r.save()
     #print len(r.rules)
     #print r.rules[0].attributes["name"].value
 

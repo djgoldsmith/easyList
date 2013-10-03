@@ -214,7 +214,7 @@ pathfinder.addWeapon(Weapon("Ranger Long Rifle",36,"X",6,"shooting",1,specialRul
 scorpionCS=Weapon("Scorpion Chainsword","-","+1",6,"melee",specialRules=["Melee"])
 
 pathfinder.addWeapon(shuP)
-pathfinder.addWeapon(scorpionCS)
+#pathfinder.addWeapon(scorpionCS)
     
 # #        
 

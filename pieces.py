@@ -32,15 +32,18 @@ class Weapon(object):
             if rule=="Sniper":
                 self.addSpecialRule("Pinning")
                 self.addSpecialRule("Rending")
-        
+
     def woundProfile(self):
         toWound=" & ".join([str(shootToWoundIndividual(self.strength,n+1)) for n in range(10)])
         if "Sniper" in self.specialRules:
             toWound=" & ".join(["4"]*10)
+        if "Fleshbane" in self.specialRules:
+            toWound=" & ".join(["2"]*10)
         return """\\begin{{tabular}}{{l|l|l|l|l|l|l|l|l|l|l|}}
         \\begin{{turn}}{{90}}T\\end{{turn}} & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\\\ \\hline
                 \\begin{{turn}}{{90}}Roll\\end{{turn}} & {0}
         \\end{{tabular}}""".format(toWound)
+                
     def canShootAfterMoving(self):
         if "Assault" in self.specialRules:
             return "Fire as normal, can assault"
@@ -100,16 +103,46 @@ class Model(object):
         self.rerollHits=  rerollHits
         self.rerollWounds=rerollWounds
         self.rerollSaves= rerollSaves
+        self.extraBasics=[]
         self.weapons=[]
         if rules!=None:
             self.rules=rules
         else:
             self.rules=[]
+    def addBasic(self,info):
+        self.extraBasics.append(info)
     def addRule(self,rule):
+        if rule in self.rules:
+            return
+        if len(rule) >3 and rule[-3:].startswith("ML"):
+            self.addRule("Psyker")
+            self.addRule(rule[-3:])
+            return
         self.rules.append(rule)
+    def addRules(self,rules):
+        for r in rules: self.addRule(r)
     def addWeapon(self,w):
         w.wielder=self
         self.weapons.append(w)
+    def assaultToHit(self):
+        mapping=[[4,4,5,5,5,5,5,5,5,5],
+                [3,4,4,4,5,5,5,5,5,5],
+                [3,3,4,4,4,4,5,5,5,5],
+                [3,3,3,4,4,4,4,4,5,5],
+                [3,3,3,3,4,4,4,4,4,4],
+                [3,3,3,3,3,4,4,4,4,4],
+                [3,3,3,3,3,3,4,4,4,4],
+                [3,3,3,3,3,3,3,4,4,4],
+                [3,3,3,3,3,3,3,3,4,4],
+                [3,3,3,3,3,3,3,3,3,4]]
+                 
+        if self.ws==1:
+            mapping[-2]=5
+        return """\\begin{{tabular}}{{l|l|l|l|l|l|l|l|l|l|l|}}
+            \\begin{{turn}}{{90}}Opp. WS\\end{{turn}} & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\\\ \\hline
+            \\begin{{turn}}{{90}}Roll\\end{{turn}} & {0}
+            \\end{{tabular}}""".format(" & ".join([str(mapping[self.ws-1][n]) for n in range(10)]))        
+
     def shootToHit(self):
     
         return ["-","6","5","4","3","2","2/6","2/5","2/4","2/3","2/2"][self.bs]
@@ -153,10 +186,14 @@ class Model(object):
                 \\item[Strength]{s}
                 \\item[AP]{0.ap}
                 \\end{{description}}
+                \\subsubsection{{To Hit}}
+                {hitting}
+                \\subsubsection{{To Wound}}
+                {wounding}                
                 \\subsubsection{{Weapon Rules}}
                 {rules}
                 \\hrule
-                """.format(w,s=strength,rules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(i,r[i]) for i in w.specialRules])))
+                """.format(w,s=strength,rules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(i,r[i]) for i in w.specialRules])),hitting=self.assaultToHit(), wounding=w.woundProfile())
         if 1000<=meleeCount<2000 or meleeCount in [0,1]:
             meleeCount=0
         else:
@@ -169,6 +206,7 @@ class Model(object):
         \\subsection{{Assault Weapons}}
         Does not include pistols. See above.
         {weapons}
+        
         """.format(attacks=self.a+meleeCount, extraAttacks={True:"(Includes dual wielding bonus)",False:""}[meleeCount==1],weapons=assaultWeapons, hammerExtra={True:"(Remember to resolve \\textbf{Hammer of Wrath} wounds too)",False:""}["Hammer of Wrath" in self.rules])
 
         specialRules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(i,r[i]) for i in self.rules]))
@@ -186,6 +224,13 @@ class Model(object):
          Bs & Ws & S & T & W & A & Ld & Sv & Inv \\\\ \\hline
          {0.bs} & {0.ws} & {0.s} & {0.t} & {0.w} & {0.a} & {0.ld} & {0.sv} & {0.inv}         
         \\end{{tabular}}
+        \\begin{{itemize}}
+        {extraBasic}
+        \\end{{itemize}}
+        \\subsection{{Weapons}}
+        \\begin{{itemize}}
+        {weaponShort}
+        \end{{itemize}}
         \\end{{sectionbox}}
         \\section{{Shooting}}
         \\begin{{description}}
@@ -200,7 +245,7 @@ class Model(object):
         %\\end{{multicols}}
 
         \\end{{document}}
-        """.format(self,toHit=self.shootToHit(),shootingProfiles=weaponProfilesShooting, rules=specialRules, assaultProfile=profileAssault)
+        """.format(self,toHit=self.shootToHit(),shootingProfiles=weaponProfilesShooting, rules=specialRules, assaultProfile=profileAssault, extraBasic="\n".join(["\\item %s"%d for d in self.extraBasics]), weaponShort="\n".join(["\\item %s (%s)"%(n.name, n.type[0].upper()) for n in self.weapons ]))
         return out
 
 
@@ -211,9 +256,18 @@ for n in ["Ancient Doom", "Battle Focus", "Bladestorm", "Fleet", "Infiltrate", "
     pathfinder.addRule(n) 
 shuP=Weapon("Shuriken Pistol",12,4,5,"shooting",1,specialRules=["Pistol", "Bladestorm"])
 pathfinder.addWeapon(Weapon("Ranger Long Rifle",36,"X",6,"shooting",1,specialRules=["Heavy","Sniper"]))
+pathfinder.addWeapon(shuP)
+
 scorpionCS=Weapon("Scorpion Chainsword","-","+1",6,"melee",specialRules=["Melee"])
 
-pathfinder.addWeapon(shuP)
+farseer=Model("Farseer", 5,5,3,3,3,5,1,10,"-", inv="4++")
+farseer.addRules(["Ancient Doom", "Battle Focus", "Fleet", "Independent Character", "Psyker ML3"])
+farseer.addBasic("Choose psychic powers from Divination, Runes of Fate or Telepathy")
+farseer.addWeapon(Weapon("WitchBlade","-","+0","-","melee",specialRules=["Melee","Armourbane","Fleshbane"]))
+farseer.addWeapon(shuP)
+
+
+
 #pathfinder.addWeapon(scorpionCS)
     
 # #        
@@ -227,9 +281,11 @@ pathfinder.addWeapon(shuP)
 # guardian.addWeapon(Weapon("Shuriken Catapult awesome",12,10,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"]))
 
 r=Rules("/home/james/tmp/easyList/rules.r")
-
-
+# r.rules["ML1"]="Psyker mastery level 1"
+# r.rules["ML2"]="Psyker mastery level 2"
+# r.rules["ML3"]="Psyker mastery level 3"
+# r.save()
 #print shootToHit(9)
 #print shootToWound(4)
-print pathfinder.createSheet(r)
+print farseer.createSheet(r)
 #print guardian.createSheet(r)

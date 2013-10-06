@@ -1,4 +1,5 @@
 from ruleGrab import Rules
+#TODO: turn all dict checks into fn calls that ignore cover
 validWeaponTypes=["shooting","melee"]
 class Weapon(object):
     """
@@ -19,25 +20,36 @@ class Weapon(object):
         self.name=name
         self.strength = strength
         self.ap = ap
-        self.specialRules=[]
+        self._specialRules=[]
         for i in specialRules:
             self.addSpecialRule(i)
         self.hitExtras=hitExtras
         self.woundExtras=woundExtras
+    def hasRule(self,thing):
+        for i in self._specialRules:
+            if i.upper()==thing.upper(): return True
+        return False
     def addSpecialRule(self,rule):
-        if rule in self.specialRules:
+        if self.hasRule(rule):
             return
         else:
-            self.specialRules.append(rule)
+            self._specialRules.append(rule)
             if rule=="Sniper":
                 self.addSpecialRule("Pinning")
                 self.addSpecialRule("Rending")
-
+    
+        
     def woundProfile(self):
-        toWound=" & ".join([str(shootToWoundIndividual(self.strength,n+1)) for n in range(10)])
-        if "Sniper" in self.specialRules:
+        toWound=[str(shootToWoundIndividual(self.strength,n+1)) for n in range(10)]
+
+        if self.hasRule("Bladestorm"):
+            for i in range(len(toWound)):
+                if toWound[i]=="-":
+                    toWound[i]="6"
+        toWound=" & ".join(toWound)
+        if self.hasRule("Sniper"):
             toWound=" & ".join(["4"]*10)
-        if "Fleshbane" in self.specialRules:
+        if self.hasRule("Fleshbane"):
             toWound=" & ".join(["2"]*10)
         return """\\begin{{tabular}}{{l|l|l|l|l|l|l|l|l|l|l|}}
         \\begin{{turn}}{{90}}T\\end{{turn}} & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\\\ \\hline
@@ -45,17 +57,17 @@ class Weapon(object):
         \\end{{tabular}}""".format(toWound)
                 
     def canShootAfterMoving(self):
-        if "Assault" in self.specialRules:
+        if self.hasRule("Assault"):
             return "Fire as normal, can assault"
-        elif "Heavy" in self.specialRules:
+        elif self.hasRule("Heavy"):
             return "Fired only as snap-shots, cannot assault"
-        elif "Ordnance" in self.specialRules:
+        elif self.hasRule("Ordnance"):
             return "Cannot fire after moving"
-        elif "Pistol" in self.specialRules:
+        elif self.hasRule("Pistol"):
             return "Fire as normal, can assault"
-        elif "Rapid Fire" in self.specialRules:
+        elif self.hasRule("Rapid Fire"):
             return "Can fire as normal after moving (1shot at full range, 2 at half or less), but cannot assault."
-        elif "Salvo" in self.specialRules:
+        elif self.hasRule("Salvo"):
             return "Can fire using lower of the two values. Cannot assault after firing."
         else:
             return "This weapon doesn't seem to have a rule defined for this!"
@@ -111,8 +123,13 @@ class Model(object):
             self.rules=[]
     def addBasic(self,info):
         self.extraBasics.append(info)
+    def hasRule(self,rule):
+        for i in self.rules:
+            if i.upper()==rule.upper():
+                return True
+        return False
     def addRule(self,rule):
-        if rule in self.rules:
+        if self.hasRule(rule):
             return
         if len(rule) >3 and rule[-3:].startswith("ML"):
             self.addRule("Psyker")
@@ -171,16 +188,18 @@ class Model(object):
                 \\subsubsection{{Weapon Rules}}
                 {rules}
                 \\hrule
-                """.format(w,rules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(i,r[i]) for i in w.specialRules])),wounding=w.woundProfile(), assault=w.canShootAfterMoving(), range=w.range, apExtra={True:"/(2 on a 'to wound' roll of 6 - Rending)", False:""}["Rending" in w.specialRules])
-            if w.type=="melee" or "Pistol" in w.specialRules:
+                """.format(w,rules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(i,r[i]) for i in w._specialRules])),wounding=w.woundProfile(), assault=w.canShootAfterMoving(), range=w.range, apExtra={True:"/(2 on a 'to wound' roll of 6 - Rending)", False:""}[w.hasRule("Rending")])
+            if w.type=="melee" or w.hasRule("Pistol"):
                 meleeCount+=1
-            if "Specialist Weapon" in w.specialRules:
+            if w.hasRule("Specialist Weapon"):
                 meleeCount+=1000
             if w.type=="melee":# or "Pistol" in w.specialRules:
                 strength=w.strength
                 strength= str(strength).strip()
                 if strength[0]=="+":
                     strength=strength+" (Total: %d)"%(int(self.s)+int(strength[1:]))
+                elif strength.upper()=="USER":
+                    strength="User (%d)"%self.s
                 assaultWeapons+=""" \\subsubsection{{{0.name}}}
                 \\begin{{description}}
                 \\item[Strength]{s}
@@ -193,13 +212,24 @@ class Model(object):
                 \\subsubsection{{Weapon Rules}}
                 {rules}
                 \\hrule
-                """.format(w,s=strength,rules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(i,r[i]) for i in w.specialRules])),hitting=self.assaultToHit(), wounding=w.woundProfile())
+                """.format(w,s=strength,rules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(i,r[i]) for i in w._specialRules])),hitting=self.assaultToHit(), wounding=w.woundProfile())
         if 1000<=meleeCount<2000 or meleeCount in [0,1]:
             meleeCount=0
         else:
             meleeCount=1
 
+            
+        extraBasic=""" \\begin{itemize}
+        %s
+        \\end{itemize}
+        """%"\n".join(["\\item %s"%d for d in self.extraBasics])
+        if len(self.extraBasics)<1:
+            extraBasic=""
 
+
+        extraAttacks={True:"(Includes dual wielding bonus)",False:""}[meleeCount==1]
+        if self.hasRule("Mandiblasters"):
+            extraAttacks+="(Plus Mandiblaster attack)"
         profileAssault="""\\begin{{description}}
         \\item[Attacks]{attacks} (Remember to add an attack if charging) {extraAttacks} {hammerExtra}
         \\end{{description}}
@@ -207,12 +237,16 @@ class Model(object):
         Does not include pistols. See above.
         {weapons}
         
-        """.format(attacks=self.a+meleeCount, extraAttacks={True:"(Includes dual wielding bonus)",False:""}[meleeCount==1],weapons=assaultWeapons, hammerExtra={True:"(Remember to resolve \\textbf{Hammer of Wrath} wounds too)",False:""}["Hammer of Wrath" in self.rules])
-
+        """.format(attacks=self.a+meleeCount, extraAttacks=extraAttacks,weapons=assaultWeapons, hammerExtra={True:"(Remember to resolve \\textbf{Hammer of Wrath} wounds too)",False:""}["Hammer of Wrath" in self.rules])
+        weaponShort="""        \\begin{itemize}
+        %s
+        \end{itemize}"""%("\n".join(["\\item %s (%s)"%(n.name, n.type[0].upper()) for n in self.weapons ]))
+        if len(self.weapons)<1: weaponShort="This model has no weapons"
         specialRules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(i,r[i]) for i in self.rules]))
+        if len(self.rules)<1: specialRules="This model has no special rules."
         out= """\\documentclass[10pt,a4paper,twocolumn]{{article}}
         \\title{{{0.name}}}
-        \\author{{}} \\date{{}}
+        \\author{{{modelT}}} \\date{{}}
         \\usepackage[width=6.5in,height=8.5in]{{geometry}}
         \\usepackage{{multicol}}
         \\usepackage{{sectionbox}}
@@ -224,13 +258,9 @@ class Model(object):
          Bs & Ws & S & T & W & A & Ld & Sv & Inv \\\\ \\hline
          {0.bs} & {0.ws} & {0.s} & {0.t} & {0.w} & {0.a} & {0.ld} & {0.sv} & {0.inv}         
         \\end{{tabular}}
-        \\begin{{itemize}}
         {extraBasic}
-        \\end{{itemize}}
         \\subsection{{Weapons}}
-        \\begin{{itemize}}
         {weaponShort}
-        \end{{itemize}}
         \\end{{sectionbox}}
         \\section{{Shooting}}
         \\begin{{description}}
@@ -245,7 +275,7 @@ class Model(object):
         %\\end{{multicols}}
 
         \\end{{document}}
-        """.format(self,toHit=self.shootToHit(),shootingProfiles=weaponProfilesShooting, rules=specialRules, assaultProfile=profileAssault, extraBasic="\n".join(["\\item %s"%d for d in self.extraBasics]), weaponShort="\n".join(["\\item %s (%s)"%(n.name, n.type[0].upper()) for n in self.weapons ]))
+        """.format(self,toHit=self.shootToHit(),shootingProfiles=weaponProfilesShooting, rules=specialRules, assaultProfile=profileAssault, extraBasic=extraBasic, weaponShort=weaponShort,modelT=self.type)
         return out
 
 
@@ -260,32 +290,98 @@ pathfinder.addWeapon(shuP)
 
 scorpionCS=Weapon("Scorpion Chainsword","-","+1",6,"melee",specialRules=["Melee"])
 
-farseer=Model("Farseer", 5,5,3,3,3,5,1,10,"-", inv="4++")
+farseer=Model("Farseer", 5,5,3,3,3,5,1,10,"-", inv="4++", modelType="Infantry (Character)")
 farseer.addRules(["Ancient Doom", "Battle Focus", "Fleet", "Independent Character", "Psyker ML3"])
 farseer.addBasic("Choose psychic powers from Divination, Runes of Fate or Telepathy")
-farseer.addWeapon(Weapon("WitchBlade","-","+0","-","melee",specialRules=["Melee","Armourbane","Fleshbane"]))
+farseer.addWeapon(Weapon("WitchBlade","-","User","-","melee",specialRules=["Melee","Armourbane","Fleshbane"]))
 farseer.addWeapon(shuP)
+#TODO: hatred (breackets), preferred enemy (brackets)
+illic=Model("Illic Nightspear",6,9,3,3,3,6,3,10,"5+",modelType="Infantry (Character)")
+
+illic.addRules([ "Ancient Doom", "Battle Focus", "Bladestorm", "Distort", "Fleet", "Hatred (Necrons)", "Independent Character", "Infiltrate", "Preferred Enemy (Necrons)", "Sharpshoot", "Shrouded", "Walker of the Hidden Path", "Master of Pathfinders", "Mark of the Incomparable Hunter"])
+illic.addWeapon(Weapon("Voidbringer",48,"X",2,"shooting",specialRules=["Heavy", "Distort", "Sniper"]))
+illic.addWeapon(shuP)
 
 
-
+plasmaGrenades=Weapon("Plasma Grenades","8/-",4,4,"shooting",specialRules=["Assault","Blast","No Charge/Cover Penalty"])
+#Assault 1, Blast / - Bearer suffers no Initiave penalty for charging through cover
+sScorpion=Model("Striking Scorpion",4,4,3,3,1,5,1,9,"3+")
+sScorpion.addWeapon(scorpionCS)
+sScorpion.addRule("Mandiblasters")
+sScorpion.addWeapon(shuP)
+sScorpion.addWeapon(plasmaGrenades)
+sScorpion.addRules(["Ancient Doom", "Battle Focus", "Fleet", "Infiltrate", "Move Through Cover", "Stealth"])
+# mandiblasters=Weapon("Mandiblasters","-",3,"-","melee",specialRules=["Mandiblasters"])
+# sScorpion.addWeapon(mandiblasters)
 #pathfinder.addWeapon(scorpionCS)
-    
+
+
+direAvenger=Model("Dire Avenger",4,4,3,3,1,5,1,9,"4+")
+
+direAvenger.addWeapon(Weapon("Avenger Shuriken Catapult",18,4,5,"shooting",shots=2,specialRules=["Assault","Bladestorm"]))
+direAvenger.addWeapon(plasmaGrenades)
+direAvenger.addRules(["Ancient Doom", "Battle Focus", "Counter-attack", "Fleet"])
+
 # #        
 
 #sm=Model("Bog Standard Marine", 3,3,3,4,1,1,7,3)
-# guardian=Model("Eldar Guardian",4,3,3,3,1,1,7,5)
-# guardian.addRule("Battle Focus")
-# guardian.addRule("Girly Space Elf")
-# guardian.addWeapon(Weapon("Shuriken Catapult",12,3,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"]))
-# guardian.addWeapon(Weapon("Shuriken Catapult crap",12,1,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"]))
-# guardian.addWeapon(Weapon("Shuriken Catapult awesome",12,10,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"]))
+guardian=Model("Eldar Guardian",4,4,3,"3(5)",1,5,1,8,"5(3)+")
+guardian.addRules(["Battle Focus","Ancient Doom","Bladestorm", "Fleet"])
+
+guardian.addWeapon(Weapon("Shuriken Catapult",12,4,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"]))
+guardian.addWeapon(plasmaGrenades)
+hwp=Weapon("Heavy Weapon Platform (Shuriken Cannon)",24,6,5,"shooting",shots=3,specialRules=["Assault","Bladestorm","HWP"])
+guardian.addWeapon(hwp)
+
+windrider=Model("Windrider",4,4,3,4,1,5,1,8,"3+", modelType="Eldar Jetbike")
+windrider.addRules(["Ancient Doom", "Battle Focus", "Bladestorm"])
+
+
+twinlinkedShCannon=Weapon("Twin-Linked Shuriken Cannon",24,6,5,"shooting",shots= 3,specialRules=["Assault", "Bladestorm", "Twin-linked"])
+twinlinkedShCatapult=Weapon("Twin-Linked Shuriken Catapult",12,4,5,"shooting",shots= 2,specialRules=["Assault", "Bladestorm", "Twin-Linked"])
+windrider.addWeapon(twinlinkedShCannon)
+windrider.addWeapon(twinlinkedShCatapult)
+
+swoopingHawk=Model("Swooping Hawk",4,4,3,3,1,5,1,9,"4+",modelType="Jump Infantry")
+swoopingHawkEx=Model("Swooping Hawk Exarch",5,5,3,3,1,6,2,9,"3+",modelType="Jump Infantry (Character)")
+ru=["Ancient Doom", "Battle Focus", "Fleet", "Herald of Victory", "Skyleap", "Swooping Hawk Wings","Jump", "Bulky", "Deep Strike"]
+swoopingHawk.addRules(ru)
+swoopingHawkEx.addRules(ru)
+
+grenadePack=Weapon("Grenade Pack",24,4,4,"shooting",specialRules=["Assault", "Ignores Cover", "Skyburst"])
+swoopingHawk.addWeapon  (grenadePack)
+swoopingHawkEx.addWeapon(grenadePack)
+
+haywireGrenades=Weapon("Haywire Grenades",8,2,"-","shooting",specialRules=["Assault", "Haywire"])
+swoopingHawk.addWeapon  (haywireGrenades)
+swoopingHawkEx.addWeapon(haywireGrenades)
+
+hawksTalon=Weapon("Hawk's Talon",24,5,5,"shooting",shots=3,specialRules=["Assault"])
+swoopingHawkEx.addWeapon(hawksTalon)
+
+lasblaster=Weapon("Lasblaster",24,3,5,"shooting",shots=3,specialRules=["Assault"])
+swoopingHawk.addWeapon  (lasblaster)
+
+
+
+swoopingHawk.addWeapon  (plasmaGrenades)
+swoopingHawkEx.addWeapon(plasmaGrenades)
+
 
 r=Rules("/home/james/tmp/easyList/rules.r")
+#r.rules["HWP"]="Platform has it's own toughness and save, shown in brackets. To do: write the rest of this."
+#r.rules["Jump"]="Jump units can move over all other models and terrain freely.  Begin/end in diff. terrain = dangerous terrain test. Jump move n movement or assault, not both.  Movement: move up to 12\". Assault: re-roll distance and gain Hammer of Wrath for the turn. When falling back, move 3d6\". Confers Bulky and Deep Strike rules."
+#r.rules["Twin-Linked"]="Re-roll misses"
+#r.rules["No Charge/Cover Penalty"]="Bearer suffers no Initiative penalty for charging through cover"
+#r.rules["Mandiblasters"]="At I10 a model with mandiblasters inflicts a S3 AP- hit on one enemy model in base contact"
 # r.rules["ML1"]="Psyker mastery level 1"
 # r.rules["ML2"]="Psyker mastery level 2"
 # r.rules["ML3"]="Psyker mastery level 3"
-# r.save()
+#r.save()
 #print shootToHit(9)
 #print shootToWound(4)
-print farseer.createSheet(r)
-#print guardian.createSheet(r)
+#print direAvenger.createSheet(r)
+print guardian.createSheet(r)
+#print swoopingHawk.createSheet(r)
+#print swoopingHawkEx.createSheet(r)
+#  LocalWords:  sScorpion

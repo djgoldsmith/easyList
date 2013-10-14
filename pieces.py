@@ -1,6 +1,11 @@
 from ruleGrab import Rules
 #TODO: turn all dict checks into fn calls that ignore cover
 validWeaponTypes=["shooting","melee"]
+
+def sanitiseName(n):
+    allowed="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
+    return "".join([i if i in allowed else "" if i!=" " else "_" for i in n])
+
 class Weapon(object):
     """
     """
@@ -141,6 +146,9 @@ class Model(object):
     def addWeapon(self,w):
         w.wielder=self
         self.weapons.append(w)
+    def addWeapons(self,weapons):
+        for i in weapons:
+            self.addWeapon(i)
     def assaultToHit(self):
         mapping=[[4,4,5,5,5,5,5,5,5,5],
                 [3,4,4,4,5,5,5,5,5,5],
@@ -189,7 +197,7 @@ class Model(object):
                 {rules}
                 \\hrule
                 """.format(w,rules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(i,r[i]) for i in w._specialRules])),wounding=w.woundProfile(), assault=w.canShootAfterMoving(), range=w.range, apExtra={True:"/(2 on a 'to wound' roll of 6 - Rending)", False:""}[w.hasRule("Rending")])
-            if w.type=="melee" or w.hasRule("Pistol"):
+            if not w.hasRule("Grenade") and (w.type=="melee" or w.hasRule("Pistol")):
                 meleeCount+=1
             if w.hasRule("Specialist Weapon"):
                 meleeCount+=1000
@@ -233,7 +241,7 @@ class Model(object):
         profileAssault="""\\begin{{description}}
         \\item[Attacks]{attacks} (Remember to add an attack if charging) {extraAttacks} {hammerExtra}
         \\end{{description}}
-        \\subsection{{Assault Weapons}}
+        \\subsection{{Melee Weapons}}
         Does not include pistols. See above.
         {weapons}
         
@@ -267,7 +275,7 @@ class Model(object):
         \\item[To hit:] {toHit} {0.rerollHits}
         \\end{{description}}
         {shootingProfiles}
-        \\section{{Assault}}
+        \\section{{Assault/Melee}}
         {assaultProfile}
         \\section{{Special Rules}}
         %\\begin{{multicols}}{{2}}
@@ -346,7 +354,12 @@ swoopingHawk=Model("Swooping Hawk",4,4,3,3,1,5,1,9,"4+",modelType="Jump Infantry
 swoopingHawkEx=Model("Swooping Hawk Exarch",5,5,3,3,1,6,2,9,"3+",modelType="Jump Infantry (Character)")
 ru=["Ancient Doom", "Battle Focus", "Fleet", "Herald of Victory", "Skyleap", "Swooping Hawk Wings","Jump", "Bulky", "Deep Strike"]
 swoopingHawk.addRules(ru)
+swoopingHawk.addRule("Hammer of Wrath")
+swoopingHawk.addBasic("Hammer of Wrath only applies according to the Jump rule")
+
 swoopingHawkEx.addRules(ru)
+swoopingHawkEx.addRule("Hammer of Wrath")
+swoopingHawkEx.addBasic("Hammer of Wrath only applies according to the Jump rule")
 
 grenadePack=Weapon("Grenade Pack",24,4,4,"shooting",specialRules=["Assault", "Ignores Cover", "Skyburst"])
 swoopingHawk.addWeapon  (grenadePack)
@@ -362,13 +375,42 @@ swoopingHawkEx.addWeapon(hawksTalon)
 lasblaster=Weapon("Lasblaster",24,3,5,"shooting",shots=3,specialRules=["Assault"])
 swoopingHawk.addWeapon  (lasblaster)
 
-
-
 swoopingHawk.addWeapon  (plasmaGrenades)
 swoopingHawkEx.addWeapon(plasmaGrenades)
 
 
+
+wraithlord=Model("Wraithlord",4,4,8,8,3,4,3,10,"3+")
+wraithlord.addRules(["Ancient Doom", "Fearless"])
+flamer=Weapon("Flamer","Template",4,5,"shooting",specialRules=["Assault"])
+scatterLaser=Weapon("Scatter Laser",36,6,6,"shooting",shots=4,specialRules=["Heavy", "Laser Lock"])
+starcannon=Weapon("Star Cannon",36,6,2,"shooting",specialRules=["Heavy"],shots= 2)
+wraithlord.addWeapon(flamer)
+wraithlord.addWeapon(scatterLaser)
+wraithlord.addWeapon(starcannon)
+
+
+
+interrogator=Model("Interrogator-Chaplain `POP'",5,5,4,4,3,5,3,10,"3+", inv="4+", modelType="Independant Character")
+#interrogator.addRules(["Independant Character", "Zealot","Inner Circle", "Fearless", "Preferred Enemy (Chaos Space Marines)", "Rosarius", "Auspex", "Digital Weapons","Porta-Rack","Power-Field Generator", "Shroud of Heroes"])
+interrogator.addRules(["Independant Character", "Zealot","Inner Circle", "Fearless", "Preferred Enemy (Chaos Space Marines)",  "Digital Weapons"])
+crozius=Weapon("Crozius Arcanum","-","+2","4","melee",specialRules=["Melee", "Concussive"])
+fragGrenades=Weapon("Frag Grenades",8,3,"-","shooting",specialRules=["Assault","Blast","No Charge/Cover Penalty"])
+krakA=Weapon("Krak Grenades (thrown)",8,6,4,"shooting",specialRules=["Assault"])
+krakB=Weapon("Krak Grenades (melee)","-",6,4,"melee",specialRules=["Vehicle/MC only","Grenade"])
+meltaBombs=Weapon("Melta Bombs","-",8,1,"melee",specialRules=["Armourbane","Grenade","Unwieldy","Vehicle/MC only"])
+stormBolter=Weapon("Storm Bolter",24,4,5,"shooting",specialRules=["Assault"],shots=2)
+plasmaPistol=Weapon("Plasma Pistol",12,7,2,"shooting",specialRules=["Pistol"])
+interrogator.addWeapons([crozius, plasmaPistol, fragGrenades,krakA,krakB, meltaBombs])
+
+
+
 r=Rules("/home/james/tmp/easyList/rules.r")
+# r.rules["Porta-Rack"]="f the bearer kills an enemy character in close combat he gains Preferred Enemy (current enemy) and Fear. In addition any enemy Teleport Homers and Locator Beacons can be used as if they were your own."
+# r.rules["Power-Field Generator"]="All models within 3\" have 4++"
+# r.rules["Digital Weapons"]="Re-roll a single failed to wound roll in the assault phase"
+# r.rules["Shroud of Heroes"]="Grants Feel No Pain (5+), in addition as long as the wearer is not in a unit he has Shrouded"
+# r.rules["Auspex"]="Forego shooting to make an enemy unit within 12\" reduce it's cover save by 1, untill the end of the phase"
 #r.rules["HWP"]="Platform has it's own toughness and save, shown in brackets. To do: write the rest of this."
 #r.rules["Jump"]="Jump units can move over all other models and terrain freely.  Begin/end in diff. terrain = dangerous terrain test. Jump move n movement or assault, not both.  Movement: move up to 12\". Assault: re-roll distance and gain Hammer of Wrath for the turn. When falling back, move 3d6\". Confers Bulky and Deep Strike rules."
 #r.rules["Twin-Linked"]="Re-roll misses"
@@ -381,7 +423,13 @@ r=Rules("/home/james/tmp/easyList/rules.r")
 #print shootToHit(9)
 #print shootToWound(4)
 #print direAvenger.createSheet(r)
-print guardian.createSheet(r)
+#print guardian.createSheet(r)
 #print swoopingHawk.createSheet(r)
 #print swoopingHawkEx.createSheet(r)
+#print wraithlord.createSheet(r)
+#print interrogator.createSheet(r)
+import subprocess
+p=subprocess.Popen(["pdflatex", "-jobname",sanitiseName(interrogator.name)], stdin=subprocess.PIPE)
+p.communicate(interrogator.createSheet(r))
+p.wait()
 #  LocalWords:  sScorpion

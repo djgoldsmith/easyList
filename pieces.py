@@ -1,7 +1,7 @@
 from ruleGrab import Rules
 #TODO: turn all dict checks into fn calls that ignore cover
 validWeaponTypes=["shooting","melee"]
-
+toHitStats=["-","6","5","4","3","2","2/6","2/5","2/4","2/3","2/2"]
 def sanitiseName(n):
     allowed="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
     return "".join([i if i in allowed else "" if i!=" " else "_" for i in n])
@@ -170,7 +170,7 @@ class Model(object):
 
     def shootToHit(self):
     
-        return ["-","6","5","4","3","2","2/6","2/5","2/4","2/3","2/2"][self.bs]
+        return toHitStats[self.bs]
     def shootToWound(self):
         out=[]
         for i in range(10):
@@ -287,149 +287,151 @@ class Model(object):
         return out
 
 
-#TODO: bladestom in reroll info
-
-pathfinder=Model("Pathfinder",4,4,3,3,1,5,1,8,5)
-for n in ["Ancient Doom", "Battle Focus", "Bladestorm", "Fleet", "Infiltrate", "Move Through Cover", "Sharpshoot", "Shrouded", "Stealth"]:
-    pathfinder.addRule(n) 
-shuP=Weapon("Shuriken Pistol",12,4,5,"shooting",1,specialRules=["Pistol", "Bladestorm"])
-pathfinder.addWeapon(Weapon("Ranger Long Rifle",36,"X",6,"shooting",1,specialRules=["Heavy","Sniper"]))
-pathfinder.addWeapon(shuP)
-
-scorpionCS=Weapon("Scorpion Chainsword","-","+1",6,"melee",specialRules=["Melee"])
-
-farseer=Model("Farseer", 5,5,3,3,3,5,1,10,"-", inv="4++", modelType="Infantry (Character)")
-farseer.addRules(["Ancient Doom", "Battle Focus", "Fleet", "Independent Character", "Psyker ML3"])
-farseer.addBasic("Choose psychic powers from Divination, Runes of Fate or Telepathy")
-farseer.addWeapon(Weapon("WitchBlade","-","User","-","melee",specialRules=["Melee","Armourbane","Fleshbane"]))
-farseer.addWeapon(shuP)
-#TODO: hatred (breackets), preferred enemy (brackets)
-illic=Model("Illic Nightspear",6,9,3,3,3,6,3,10,"5+",modelType="Infantry (Character)")
-
-illic.addRules([ "Ancient Doom", "Battle Focus", "Bladestorm", "Distort", "Fleet", "Hatred (Necrons)", "Independent Character", "Infiltrate", "Preferred Enemy (Necrons)", "Sharpshoot", "Shrouded", "Walker of the Hidden Path", "Master of Pathfinders", "Mark of the Incomparable Hunter"])
-illic.addWeapon(Weapon("Voidbringer",48,"X",2,"shooting",specialRules=["Heavy", "Distort", "Sniper"]))
-illic.addWeapon(shuP)
-
-
-plasmaGrenades=Weapon("Plasma Grenades","8/-",4,4,"shooting",specialRules=["Assault","Blast","No Charge/Cover Penalty"])
-#Assault 1, Blast / - Bearer suffers no Initiave penalty for charging through cover
-sScorpion=Model("Striking Scorpion",4,4,3,3,1,5,1,9,"3+")
-sScorpion.addWeapon(scorpionCS)
-sScorpion.addRule("Mandiblasters")
-sScorpion.addWeapon(shuP)
-sScorpion.addWeapon(plasmaGrenades)
-sScorpion.addRules(["Ancient Doom", "Battle Focus", "Fleet", "Infiltrate", "Move Through Cover", "Stealth"])
-# mandiblasters=Weapon("Mandiblasters","-",3,"-","melee",specialRules=["Mandiblasters"])
-# sScorpion.addWeapon(mandiblasters)
-#pathfinder.addWeapon(scorpionCS)
-
-
-direAvenger=Model("Dire Avenger",4,4,3,3,1,5,1,9,"4+")
-
-direAvenger.addWeapon(Weapon("Avenger Shuriken Catapult",18,4,5,"shooting",shots=2,specialRules=["Assault","Bladestorm"]))
-direAvenger.addWeapon(plasmaGrenades)
-direAvenger.addRules(["Ancient Doom", "Battle Focus", "Counter-attack", "Fleet"])
-
-# #        
-
-#sm=Model("Bog Standard Marine", 3,3,3,4,1,1,7,3)
-guardian=Model("Eldar Guardian",4,4,3,"3(5)",1,5,1,8,"5(3)+")
-guardian.addRules(["Battle Focus","Ancient Doom","Bladestorm", "Fleet"])
-
-guardian.addWeapon(Weapon("Shuriken Catapult",12,4,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"]))
-guardian.addWeapon(plasmaGrenades)
-hwp=Weapon("Heavy Weapon Platform (Shuriken Cannon)",24,6,5,"shooting",shots=3,specialRules=["Assault","Bladestorm","HWP"])
-guardian.addWeapon(hwp)
-
-windrider=Model("Windrider",4,4,3,4,1,5,1,8,"3+", modelType="Eldar Jetbike")
-windrider.addRules(["Ancient Doom", "Battle Focus", "Bladestorm"])
-
-
-twinlinkedShCannon=Weapon("Twin-Linked Shuriken Cannon",24,6,5,"shooting",shots= 3,specialRules=["Assault", "Bladestorm", "Twin-linked"])
-twinlinkedShCatapult=Weapon("Twin-Linked Shuriken Catapult",12,4,5,"shooting",shots= 2,specialRules=["Assault", "Bladestorm", "Twin-Linked"])
-windrider.addWeapon(twinlinkedShCannon)
-windrider.addWeapon(twinlinkedShCatapult)
-
-swoopingHawk=Model("Swooping Hawk",4,4,3,3,1,5,1,9,"4+",modelType="Jump Infantry")
-swoopingHawkEx=Model("Swooping Hawk Exarch",5,5,3,3,1,6,2,9,"3+",modelType="Jump Infantry (Character)")
-ru=["Ancient Doom", "Battle Focus", "Fleet", "Herald of Victory", "Skyleap", "Swooping Hawk Wings","Jump", "Bulky", "Deep Strike"]
-swoopingHawk.addRules(ru)
-swoopingHawk.addRule("Hammer of Wrath")
-swoopingHawk.addBasic("Hammer of Wrath only applies according to the Jump rule")
-
-swoopingHawkEx.addRules(ru)
-swoopingHawkEx.addRule("Hammer of Wrath")
-swoopingHawkEx.addBasic("Hammer of Wrath only applies according to the Jump rule")
-
-grenadePack=Weapon("Grenade Pack",24,4,4,"shooting",specialRules=["Assault", "Ignores Cover", "Skyburst"])
-swoopingHawk.addWeapon  (grenadePack)
-swoopingHawkEx.addWeapon(grenadePack)
-
-haywireGrenades=Weapon("Haywire Grenades",8,2,"-","shooting",specialRules=["Assault", "Haywire"])
-swoopingHawk.addWeapon  (haywireGrenades)
-swoopingHawkEx.addWeapon(haywireGrenades)
-
-hawksTalon=Weapon("Hawk's Talon",24,5,5,"shooting",shots=3,specialRules=["Assault"])
-swoopingHawkEx.addWeapon(hawksTalon)
-
-lasblaster=Weapon("Lasblaster",24,3,5,"shooting",shots=3,specialRules=["Assault"])
-swoopingHawk.addWeapon  (lasblaster)
-
-swoopingHawk.addWeapon  (plasmaGrenades)
-swoopingHawkEx.addWeapon(plasmaGrenades)
-
-
-
-wraithlord=Model("Wraithlord",4,4,8,8,3,4,3,10,"3+")
-wraithlord.addRules(["Ancient Doom", "Fearless"])
-flamer=Weapon("Flamer","Template",4,5,"shooting",specialRules=["Assault"])
-scatterLaser=Weapon("Scatter Laser",36,6,6,"shooting",shots=4,specialRules=["Heavy", "Laser Lock"])
-starcannon=Weapon("Star Cannon",36,6,2,"shooting",specialRules=["Heavy"],shots= 2)
-wraithlord.addWeapon(flamer)
-wraithlord.addWeapon(scatterLaser)
-wraithlord.addWeapon(starcannon)
-
-
-
-interrogator=Model("Interrogator-Chaplain `POP'",5,5,4,4,3,5,3,10,"3+", inv="4+", modelType="Independant Character")
-#interrogator.addRules(["Independant Character", "Zealot","Inner Circle", "Fearless", "Preferred Enemy (Chaos Space Marines)", "Rosarius", "Auspex", "Digital Weapons","Porta-Rack","Power-Field Generator", "Shroud of Heroes"])
-interrogator.addRules(["Independant Character", "Zealot","Inner Circle", "Fearless", "Preferred Enemy (Chaos Space Marines)",  "Digital Weapons"])
-crozius=Weapon("Crozius Arcanum","-","+2","4","melee",specialRules=["Melee", "Concussive"])
-fragGrenades=Weapon("Frag Grenades",8,3,"-","shooting",specialRules=["Assault","Blast","No Charge/Cover Penalty"])
-krakA=Weapon("Krak Grenades (thrown)",8,6,4,"shooting",specialRules=["Assault"])
-krakB=Weapon("Krak Grenades (melee)","-",6,4,"melee",specialRules=["Vehicle/MC only","Grenade"])
-meltaBombs=Weapon("Melta Bombs","-",8,1,"melee",specialRules=["Armourbane","Grenade","Unwieldy","Vehicle/MC only"])
-stormBolter=Weapon("Storm Bolter",24,4,5,"shooting",specialRules=["Assault"],shots=2)
-plasmaPistol=Weapon("Plasma Pistol",12,7,2,"shooting",specialRules=["Pistol"])
-interrogator.addWeapons([crozius, plasmaPistol, fragGrenades,krakA,krakB, meltaBombs])
-
-
-
-r=Rules("/home/james/tmp/easyList/rules.r")
-# r.rules["Porta-Rack"]="f the bearer kills an enemy character in close combat he gains Preferred Enemy (current enemy) and Fear. In addition any enemy Teleport Homers and Locator Beacons can be used as if they were your own."
-# r.rules["Power-Field Generator"]="All models within 3\" have 4++"
-# r.rules["Digital Weapons"]="Re-roll a single failed to wound roll in the assault phase"
-# r.rules["Shroud of Heroes"]="Grants Feel No Pain (5+), in addition as long as the wearer is not in a unit he has Shrouded"
-# r.rules["Auspex"]="Forego shooting to make an enemy unit within 12\" reduce it's cover save by 1, untill the end of the phase"
-#r.rules["HWP"]="Platform has it's own toughness and save, shown in brackets. To do: write the rest of this."
-#r.rules["Jump"]="Jump units can move over all other models and terrain freely.  Begin/end in diff. terrain = dangerous terrain test. Jump move n movement or assault, not both.  Movement: move up to 12\". Assault: re-roll distance and gain Hammer of Wrath for the turn. When falling back, move 3d6\". Confers Bulky and Deep Strike rules."
-#r.rules["Twin-Linked"]="Re-roll misses"
-#r.rules["No Charge/Cover Penalty"]="Bearer suffers no Initiative penalty for charging through cover"
-#r.rules["Mandiblasters"]="At I10 a model with mandiblasters inflicts a S3 AP- hit on one enemy model in base contact"
-# r.rules["ML1"]="Psyker mastery level 1"
-# r.rules["ML2"]="Psyker mastery level 2"
-# r.rules["ML3"]="Psyker mastery level 3"
-#r.save()
-#print shootToHit(9)
-#print shootToWound(4)
-#print direAvenger.createSheet(r)
-#print guardian.createSheet(r)
-#print swoopingHawk.createSheet(r)
-#print swoopingHawkEx.createSheet(r)
-#print wraithlord.createSheet(r)
-#print interrogator.createSheet(r)
-import subprocess
-p=subprocess.Popen(["pdflatex", "-jobname",sanitiseName(interrogator.name)], stdin=subprocess.PIPE)
-p.communicate(interrogator.createSheet(r))
-p.wait()
-#  LocalWords:  sScorpion
+if __name__=="__main__":
+        
+    #TODO: bladestom in reroll info
+    
+    pathfinder=Model("Pathfinder",4,4,3,3,1,5,1,8,5)
+    for n in ["Ancient Doom", "Battle Focus", "Bladestorm", "Fleet", "Infiltrate", "Move Through Cover", "Sharpshoot", "Shrouded", "Stealth"]:
+        pathfinder.addRule(n) 
+    shuP=Weapon("Shuriken Pistol",12,4,5,"shooting",1,specialRules=["Pistol", "Bladestorm"])
+    pathfinder.addWeapon(Weapon("Ranger Long Rifle",36,"X",6,"shooting",1,specialRules=["Heavy","Sniper"]))
+    pathfinder.addWeapon(shuP)
+    
+    scorpionCS=Weapon("Scorpion Chainsword","-","+1",6,"melee",specialRules=["Melee"])
+    
+    farseer=Model("Farseer", 5,5,3,3,3,5,1,10,"-", inv="4++", modelType="Infantry (Character)")
+    farseer.addRules(["Ancient Doom", "Battle Focus", "Fleet", "Independent Character", "Psyker ML3"])
+    farseer.addBasic("Choose psychic powers from Divination, Runes of Fate or Telepathy")
+    farseer.addWeapon(Weapon("WitchBlade","-","User","-","melee",specialRules=["Melee","Armourbane","Fleshbane"]))
+    farseer.addWeapon(shuP)
+    #TODO: hatred (breackets), preferred enemy (brackets)
+    illic=Model("Illic Nightspear",6,9,3,3,3,6,3,10,"5+",modelType="Infantry (Character)")
+    
+    illic.addRules([ "Ancient Doom", "Battle Focus", "Bladestorm", "Distort", "Fleet", "Hatred (Necrons)", "Independent Character", "Infiltrate", "Preferred Enemy (Necrons)", "Sharpshoot", "Shrouded", "Walker of the Hidden Path", "Master of Pathfinders", "Mark of the Incomparable Hunter"])
+    illic.addWeapon(Weapon("Voidbringer",48,"X",2,"shooting",specialRules=["Heavy", "Distort", "Sniper"]))
+    illic.addWeapon(shuP)
+    
+    
+    plasmaGrenades=Weapon("Plasma Grenades","8/-",4,4,"shooting",specialRules=["Assault","Blast","No Charge/Cover Penalty"])
+    #Assault 1, Blast / - Bearer suffers no Initiave penalty for charging through cover
+    sScorpion=Model("Striking Scorpion",4,4,3,3,1,5,1,9,"3+")
+    sScorpion.addWeapon(scorpionCS)
+    sScorpion.addRule("Mandiblasters")
+    sScorpion.addWeapon(shuP)
+    sScorpion.addWeapon(plasmaGrenades)
+    sScorpion.addRules(["Ancient Doom", "Battle Focus", "Fleet", "Infiltrate", "Move Through Cover", "Stealth"])
+    # mandiblasters=Weapon("Mandiblasters","-",3,"-","melee",specialRules=["Mandiblasters"])
+    # sScorpion.addWeapon(mandiblasters)
+    #pathfinder.addWeapon(scorpionCS)
+    
+    
+    direAvenger=Model("Dire Avenger",4,4,3,3,1,5,1,9,"4+")
+    
+    direAvenger.addWeapon(Weapon("Avenger Shuriken Catapult",18,4,5,"shooting",shots=2,specialRules=["Assault","Bladestorm"]))
+    direAvenger.addWeapon(plasmaGrenades)
+    direAvenger.addRules(["Ancient Doom", "Battle Focus", "Counter-attack", "Fleet"])
+    
+    # #        
+    
+    #sm=Model("Bog Standard Marine", 3,3,3,4,1,1,7,3)
+    guardian=Model("Eldar Guardian",4,4,3,"3(5)",1,5,1,8,"5(3)+")
+    guardian.addRules(["Battle Focus","Ancient Doom","Bladestorm", "Fleet"])
+    
+    guardian.addWeapon(Weapon("Shuriken Catapult",12,4,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"]))
+    guardian.addWeapon(plasmaGrenades)
+    hwp=Weapon("Heavy Weapon Platform (Shuriken Cannon)",24,6,5,"shooting",shots=3,specialRules=["Assault","Bladestorm","HWP"])
+    guardian.addWeapon(hwp)
+    
+    windrider=Model("Windrider",4,4,3,4,1,5,1,8,"3+", modelType="Eldar Jetbike")
+    windrider.addRules(["Ancient Doom", "Battle Focus", "Bladestorm"])
+    
+    
+    twinlinkedShCannon=Weapon("Twin-Linked Shuriken Cannon",24,6,5,"shooting",shots= 3,specialRules=["Assault", "Bladestorm", "Twin-linked"])
+    twinlinkedShCatapult=Weapon("Twin-Linked Shuriken Catapult",12,4,5,"shooting",shots= 2,specialRules=["Assault", "Bladestorm", "Twin-Linked"])
+    windrider.addWeapon(twinlinkedShCannon)
+    windrider.addWeapon(twinlinkedShCatapult)
+    
+    swoopingHawk=Model("Swooping Hawk",4,4,3,3,1,5,1,9,"4+",modelType="Jump Infantry")
+    swoopingHawkEx=Model("Swooping Hawk Exarch",5,5,3,3,1,6,2,9,"3+",modelType="Jump Infantry (Character)")
+    ru=["Ancient Doom", "Battle Focus", "Fleet", "Herald of Victory", "Skyleap", "Swooping Hawk Wings","Jump", "Bulky", "Deep Strike"]
+    swoopingHawk.addRules(ru)
+    swoopingHawk.addRule("Hammer of Wrath")
+    swoopingHawk.addBasic("Hammer of Wrath only applies according to the Jump rule")
+    
+    swoopingHawkEx.addRules(ru)
+    swoopingHawkEx.addRule("Hammer of Wrath")
+    swoopingHawkEx.addBasic("Hammer of Wrath only applies according to the Jump rule")
+    
+    grenadePack=Weapon("Grenade Pack",24,4,4,"shooting",specialRules=["Assault", "Ignores Cover", "Skyburst"])
+    swoopingHawk.addWeapon  (grenadePack)
+    swoopingHawkEx.addWeapon(grenadePack)
+    
+    haywireGrenades=Weapon("Haywire Grenades",8,2,"-","shooting",specialRules=["Assault", "Haywire"])
+    swoopingHawk.addWeapon  (haywireGrenades)
+    swoopingHawkEx.addWeapon(haywireGrenades)
+    
+    hawksTalon=Weapon("Hawk's Talon",24,5,5,"shooting",shots=3,specialRules=["Assault"])
+    swoopingHawkEx.addWeapon(hawksTalon)
+    
+    lasblaster=Weapon("Lasblaster",24,3,5,"shooting",shots=3,specialRules=["Assault"])
+    swoopingHawk.addWeapon  (lasblaster)
+    
+    swoopingHawk.addWeapon  (plasmaGrenades)
+    swoopingHawkEx.addWeapon(plasmaGrenades)
+    
+    
+    
+    wraithlord=Model("Wraithlord",4,4,8,8,3,4,3,10,"3+")
+    wraithlord.addRules(["Ancient Doom", "Fearless"])
+    flamer=Weapon("Flamer","Template",4,5,"shooting",specialRules=["Assault"])
+    scatterLaser=Weapon("Scatter Laser",36,6,6,"shooting",shots=4,specialRules=["Heavy", "Laser Lock"])
+    starcannon=Weapon("Star Cannon",36,6,2,"shooting",specialRules=["Heavy"],shots= 2)
+    wraithlord.addWeapon(flamer)
+    wraithlord.addWeapon(scatterLaser)
+    wraithlord.addWeapon(starcannon)
+    
+    
+    
+    interrogator=Model("Interrogator-Chaplain `POP'",5,5,4,4,3,5,3,10,"3+", inv="4+", modelType="Independant Character")
+    #interrogator.addRules(["Independant Character", "Zealot","Inner Circle", "Fearless", "Preferred Enemy (Chaos Space Marines)", "Rosarius", "Auspex", "Digital Weapons","Porta-Rack","Power-Field Generator", "Shroud of Heroes"])
+    interrogator.addRules(["Independant Character", "Zealot","Inner Circle", "Fearless", "Preferred Enemy (Chaos Space Marines)",  "Digital Weapons"])
+    crozius=Weapon("Crozius Arcanum","-","+2","4","melee",specialRules=["Melee", "Concussive"])
+    fragGrenades=Weapon("Frag Grenades",8,3,"-","shooting",specialRules=["Assault","Blast","No Charge/Cover Penalty"])
+    krakA=Weapon("Krak Grenades (thrown)",8,6,4,"shooting",specialRules=["Assault"])
+    krakB=Weapon("Krak Grenades (melee)","-",6,4,"melee",specialRules=["Vehicle/MC only","Grenade"])
+    meltaBombs=Weapon("Melta Bombs","-",8,1,"melee",specialRules=["Armourbane","Grenade","Unwieldy","Vehicle/MC only"])
+    stormBolter=Weapon("Storm Bolter",24,4,5,"shooting",specialRules=["Assault"],shots=2)
+    plasmaPistol=Weapon("Plasma Pistol",12,7,2,"shooting",specialRules=["Pistol"])
+    interrogator.addWeapons([crozius, plasmaPistol, fragGrenades,krakA,krakB, meltaBombs])
+    
+    
+    
+    r=Rules("/home/james/tmp/easyList/rules.r")
+    # r.rules["Porta-Rack"]="f the bearer kills an enemy character in close combat he gains Preferred Enemy (current enemy) and Fear. In addition any enemy Teleport Homers and Locator Beacons can be used as if they were your own."
+    # r.rules["Power-Field Generator"]="All models within 3\" have 4++"
+    # r.rules["Digital Weapons"]="Re-roll a single failed to wound roll in the assault phase"
+    # r.rules["Shroud of Heroes"]="Grants Feel No Pain (5+), in addition as long as the wearer is not in a unit he has Shrouded"
+    # r.rules["Auspex"]="Forego shooting to make an enemy unit within 12\" reduce it's cover save by 1, untill the end of the phase"
+    #r.rules["HWP"]="Platform has it's own toughness and save, shown in brackets. To do: write the rest of this."
+    #r.rules["Jump"]="Jump units can move over all other models and terrain freely.  Begin/end in diff. terrain = dangerous terrain test. Jump move n movement or assault, not both.  Movement: move up to 12\". Assault: re-roll distance and gain Hammer of Wrath for the turn. When falling back, move 3d6\". Confers Bulky and Deep Strike rules."
+    #r.rules["Twin-Linked"]="Re-roll misses"
+    #r.rules["No Charge/Cover Penalty"]="Bearer suffers no Initiative penalty for charging through cover"
+    #r.rules["Mandiblasters"]="At I10 a model with mandiblasters inflicts a S3 AP- hit on one enemy model in base contact"
+    # r.rules["ML1"]="Psyker mastery level 1"
+    # r.rules["ML2"]="Psyker mastery level 2"
+    # r.rules["ML3"]="Psyker mastery level 3"
+    #r.save()
+    #print shootToHit(9)
+    #print shootToWound(4)
+    #print direAvenger.createSheet(r)
+    #print guardian.createSheet(r)
+    #print swoopingHawk.createSheet(r)
+    #print swoopingHawkEx.createSheet(r)
+    #print wraithlord.createSheet(r)
+    #print interrogator.createSheet(r)
+    import subprocess
+    p=subprocess.Popen(["pdflatex", "-jobname",sanitiseName(interrogator.name)], stdin=subprocess.PIPE)
+    p.communicate(interrogator.createSheet(r))
+    p.wait()
+    #  LocalWords:  sScorpion

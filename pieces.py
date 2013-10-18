@@ -1,7 +1,34 @@
 from ruleGrab import Rules
+import copy
 #TODO: turn all dict checks into fn calls that ignore cover
 validWeaponTypes=["shooting","melee"]
 toHitStats=["-","6","5","4","3","2","2/6","2/5","2/4","2/3","2/2"]
+
+moveStats={}
+moveStatLines=[("Infantry",6,"max(2d6)","2d6","Run D6",""),
+               ( "Jump",12,"Starting or ending in difficult terrain requires a dangerous terrain test","3d6","Run D6","When not 'jumping', move distance and difficult terrain behaviour are inherited from the base type, but fallback is still 3d6"),
+               ( "Beast",12,"No effect","3D6","Run D6",""),
+               ( "Cavalry",12,"Count as dangerous","3d6","Run D6",""),
+               ( "Bike",12,"Count as dangerous","3d6","Turbo-Boost 12",""),
+               ( "Jetbike",12,"Starting or ending in difficult terrain requires a dangerous terrain test","3d6","Turbo-Boost 24",""),
+               ( "Eldar Jetbike",12,"Starting or ending in difficult terrain requires a dangerous terrain test","3d6","Turbo-Boost 36",""),
+               ( "Monstrous Creature",6,"max(3d6)","2d6","Run D6",""),
+               ( "Artillery",6,"max(2d6)","2d6","Run D6",""),
+               ( "Jetpack",6,"Starting or ending in difficult terrain requires a dangerous terrain test","2d6","When not using the jetpack, move distance and difficult terrain behaviour are inherited from the base type, and fallback is 2d6","Run D6",""),
+               ( "Skimmer",12,"Starting or ending in difficult terrain requires a dangerous terrain test","N/A","Flat-Out 6",""),
+               ( "Walker",6,"max(2d6)","N/A","Run D6",""),
+               ( "Fast Skimmer",12,"Dangerous terrain test","N/A","Flat-Out 18",""),
+               ( "Fast",12,"Dangerous terrain test","N/A","Flat-Out 12",""),
+               ( "Vehicle",12,"Dangerous terrain test","N/A","Flat-Out 6","")
+               ]
+for i in moveStatLines:
+    moveStats[i[0]]={"move":i[1],"terrain":i[2],"fallback":i[3],"run":i[4],"notes":i[5]} 
+
+
+
+ 
+#TODO: Flyer movement
+#TODO: Make note about falling back in fallback section when any rule that effects it applies
 def sanitiseName(n):
     allowed="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
     return "".join([i if i in allowed else "" if i!=" " else "_" for i in n])
@@ -126,6 +153,7 @@ class Model(object):
             self.rules=rules
         else:
             self.rules=[]
+        self.moveStats=copy.deepcopy(moveStats[self.type if not self.type.startswith("Jump") else "Jump"])
     def addBasic(self,info):
         self.extraBasics.append(info)
     def hasRule(self,rule):
@@ -136,6 +164,12 @@ class Model(object):
     def addRule(self,rule):
         if self.hasRule(rule):
             return
+        if rule=="Independent Character":            
+            self.addBasic("Independent Character")
+        if rule=="Battle Focus":
+            self.moveStats["run"]+="(Battle focus allows shoot+run in any order)"
+        if rule=="Fleet":
+            self.moveStats["run"]+="(Fleet allows one die to be rerolled)"
         if len(rule) >3 and rule[-3:].startswith("ML"):
             self.addRule("Psyker")
             self.addRule(rule[-3:])
@@ -238,6 +272,8 @@ class Model(object):
         extraAttacks={True:"(Includes dual wielding bonus)",False:""}[meleeCount==1]
         if self.hasRule("Mandiblasters"):
             extraAttacks+="(Plus Mandiblaster attack)"
+        if self.hasRule("Fleet"):
+            extraAttacks+=" \\item[Fleet] allows one charge-range die to be rereolled"
         profileAssault="""\\begin{{description}}
         \\item[Attacks]{attacks} (Remember to add an attack if charging) {extraAttacks} {hammerExtra}
         \\end{{description}}
@@ -270,6 +306,15 @@ class Model(object):
         \\subsection{{Weapons}}
         {weaponShort}
         \\end{{sectionbox}}
+        \\section{{Movement}}
+        \\begin{{description}}
+        \\item[Move Distance] {moveD}
+        \\item[Difficult Terrain] {dTerrain}
+        \\item[Fallback] {fallback}
+        \\item[Forego shooting to] {fast}
+        \\item[Notes] {notes}
+
+        \\end{{description}}
         \\section{{Shooting}}
         \\begin{{description}}
         \\item[To hit:] {toHit} {0.rerollHits}
@@ -283,8 +328,15 @@ class Model(object):
         %\\end{{multicols}}
 
         \\end{{document}}
-        """.format(self,toHit=self.shootToHit(),shootingProfiles=weaponProfilesShooting, rules=specialRules, assaultProfile=profileAssault, extraBasic=extraBasic, weaponShort=weaponShort,modelT=self.type)
+        """.format(self,toHit=self.shootToHit(),shootingProfiles=weaponProfilesShooting, rules=specialRules, assaultProfile=profileAssault, extraBasic=extraBasic, weaponShort=weaponShort,modelT=self.type, moveD=self.moveStats["move"],dTerrain=self.moveStats["terrain"],fallback=self.moveStats["fallback"],notes=self.moveStats["notes"],fast=self.moveStats["run"])
         return out
+
+
+    def render(self,rules):
+        import subprocess
+        p=subprocess.Popen(["pdflatex", "-jobname",sanitiseName(self.name)], stdin=subprocess.PIPE)
+        p.communicate(self.createSheet(rules))
+        p.wait()
 
 
 if __name__=="__main__":
@@ -300,13 +352,13 @@ if __name__=="__main__":
     
     scorpionCS=Weapon("Scorpion Chainsword","-","+1",6,"melee",specialRules=["Melee"])
     
-    farseer=Model("Farseer", 5,5,3,3,3,5,1,10,"-", inv="4++", modelType="Infantry (Character)")
+    farseer=Model("Farseer", 5,5,3,3,3,5,1,10,"-", inv="4++", modelType="Infantry")
     farseer.addRules(["Ancient Doom", "Battle Focus", "Fleet", "Independent Character", "Psyker ML3"])
     farseer.addBasic("Choose psychic powers from Divination, Runes of Fate or Telepathy")
     farseer.addWeapon(Weapon("WitchBlade","-","User","-","melee",specialRules=["Melee","Armourbane","Fleshbane"]))
     farseer.addWeapon(shuP)
     #TODO: hatred (breackets), preferred enemy (brackets)
-    illic=Model("Illic Nightspear",6,9,3,3,3,6,3,10,"5+",modelType="Infantry (Character)")
+    illic=Model("Illic Nightspear",6,9,3,3,3,6,3,10,"5+",modelType="Infantry")
     
     illic.addRules([ "Ancient Doom", "Battle Focus", "Bladestorm", "Distort", "Fleet", "Hatred (Necrons)", "Independent Character", "Infiltrate", "Preferred Enemy (Necrons)", "Sharpshoot", "Shrouded", "Walker of the Hidden Path", "Master of Pathfinders", "Mark of the Incomparable Hunter"])
     illic.addWeapon(Weapon("Voidbringer",48,"X",2,"shooting",specialRules=["Heavy", "Distort", "Sniper"]))
@@ -336,6 +388,7 @@ if __name__=="__main__":
     
     #sm=Model("Bog Standard Marine", 3,3,3,4,1,1,7,3)
     guardian=Model("Eldar Guardian",4,4,3,"3(5)",1,5,1,8,"5(3)+")
+    guardian.addBasic("Bracketed values refer to the support weapon")
     guardian.addRules(["Battle Focus","Ancient Doom","Bladestorm", "Fleet"])
     
     guardian.addWeapon(Weapon("Shuriken Catapult",12,4,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"]))
@@ -393,9 +446,9 @@ if __name__=="__main__":
     
     
     
-    interrogator=Model("Interrogator-Chaplain `POP'",5,5,4,4,3,5,3,10,"3+", inv="4+", modelType="Independant Character")
-    #interrogator.addRules(["Independant Character", "Zealot","Inner Circle", "Fearless", "Preferred Enemy (Chaos Space Marines)", "Rosarius", "Auspex", "Digital Weapons","Porta-Rack","Power-Field Generator", "Shroud of Heroes"])
-    interrogator.addRules(["Independant Character", "Zealot","Inner Circle", "Fearless", "Preferred Enemy (Chaos Space Marines)",  "Digital Weapons"])
+    interrogator=Model("Interrogator-Chaplain POP",5,5,4,4,3,5,3,10,"3+", inv="4+")
+    #interrogator.addRules(["Independent Character", "Zealot","Inner Circle", "Fearless", "Preferred Enemy (Chaos Space Marines)", "Rosarius", "Auspex", "Digital Weapons","Porta-Rack","Power-Field Generator", "Shroud of Heroes"])
+    interrogator.addRules(["Independent Character", "Zealot","Inner Circle", "Fearless", "Preferred Enemy (Chaos Space Marines)",  "Digital Weapons"])
     crozius=Weapon("Crozius Arcanum","-","+2","4","melee",specialRules=["Melee", "Concussive"])
     fragGrenades=Weapon("Frag Grenades",8,3,"-","shooting",specialRules=["Assault","Blast","No Charge/Cover Penalty"])
     krakA=Weapon("Krak Grenades (thrown)",8,6,4,"shooting",specialRules=["Assault"])
@@ -408,7 +461,7 @@ if __name__=="__main__":
     
     
     r=Rules("/home/james/tmp/easyList/rules.r")
-    # r.rules["Porta-Rack"]="f the bearer kills an enemy character in close combat he gains Preferred Enemy (current enemy) and Fear. In addition any enemy Teleport Homers and Locator Beacons can be used as if they were your own."
+    
     # r.rules["Power-Field Generator"]="All models within 3\" have 4++"
     # r.rules["Digital Weapons"]="Re-roll a single failed to wound roll in the assault phase"
     # r.rules["Shroud of Heroes"]="Grants Feel No Pain (5+), in addition as long as the wearer is not in a unit he has Shrouded"
@@ -430,8 +483,6 @@ if __name__=="__main__":
     #print swoopingHawkEx.createSheet(r)
     #print wraithlord.createSheet(r)
     #print interrogator.createSheet(r)
-    import subprocess
-    p=subprocess.Popen(["pdflatex", "-jobname",sanitiseName(interrogator.name)], stdin=subprocess.PIPE)
-    p.communicate(interrogator.createSheet(r))
-    p.wait()
+    interrogator.render(r)
+    guardian.render(r)
     #  LocalWords:  sScorpion

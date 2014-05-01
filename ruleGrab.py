@@ -27,6 +27,8 @@ class Rules(object):
         f=open(fn,"w")
         pickle.dump(self.rules,f)
         f.close()
+    def keys(self):
+        return self.rules.keys()
     def __iter__(self, ):
         """
         """

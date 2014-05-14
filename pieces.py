@@ -492,10 +492,10 @@ class Model(object):
 
 
 class Vehicle(Model):
-    def __init__(self, name, bs, front, side, rear,rules=[],modelType="Vehicle"):
+    def __init__(self, name, bs, front, side, rear,rules=None,modelType="Vehicle"):
         """
         """
-
+        if rules==None: rules=[]
         self.vehicletypes=[modelType]
         Model.__init__(self, name,-10,-10,-10,-10,-10,-10,-10,-10,-10,modelType=modelType,rules=rules)
         self.front=front

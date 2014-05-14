@@ -117,8 +117,8 @@ class Die(object):
 def mRange(a,b):
     return range(a,b+1,1)
 
-def genShotStatsBasic(bs,weaponStrength, targetToughness, ap=None, cover=None, save=None,inv=None, bladestorm=False, twinlinked=False, sniper=False, reRoll=[]):
-
+def genShotStatsBasic(bs,weaponStrength, targetToughness, ap=None, cover=None, save=None,inv=None, bladestorm=False, twinlinked=False, sniper=False, reRoll=None):
+    if reRoll==None: reRoll=[]
     toHit=pieces.toHitStats[bs]
 
     d=Die()
@@ -196,8 +196,9 @@ def meleeToHit(wsA,wsB):
              [3,3,3,3,3,3,3,3,3,4]]
     return mapping[wsA-1][wsB-1]
     
-def genMeleeStatsBasic(wsA,wsB, weaponStrength, targetToughness, ap=None,  save=None,inv=None, reRoll=[], fleshbane=False):
+def genMeleeStatsBasic(wsA,wsB, weaponStrength, targetToughness, ap=None,  save=None,inv=None, reRoll=None, fleshbane=False):
     #TODO: hammer of wrath, etc?
+    if reRoll=None: reRoll=[]
     toHit=meleeToHit(wsA,wsB)
 
     d=Die()

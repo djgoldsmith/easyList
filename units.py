@@ -7,7 +7,7 @@ class Farseer(Model):
     """
     """
     
-    def __init__(self, jetbike=False):
+    def __init__(self, jetbike=False, spear=False):
         """
         
         Arguments:
@@ -17,7 +17,7 @@ class Farseer(Model):
         armour="-"
         toughness=3
         name="Farseer"
-        rules=["Ancient Doom", "Battle Focus", "Fleet",  "Psyker ML3"]
+        rules=["Ancient Doom", "Battle Focus", "Fleet",  "Psyker ML3","Ghosthelm"]
         if jetbike:
             toughness+=1
             name+=" (Jetbike)"
@@ -29,7 +29,10 @@ class Farseer(Model):
         Model.__init__(self,"Farseer", 5,5,3,toughness,1,5,1,10,armour, inv="4++", modelType="Infantry" if not jetbike else "Eldar Jetbike")
         self.addRules(rules)
         self.addBasic("Choose psychic powers from Divination, Runes of Fate or Telepathy")
-        self.addWeapon(weapons.witchBlade)
+        if spear:
+            self.addWeapons(weapons.singingSpearDuo)
+        else:
+            self.addWeapon(weapons.witchBlade)
         self.addWeapon(weapons.shurikenPistol)
         if jetbike:
             self.addWeapon(weapons.twinlinkedShurikenCatapult)
@@ -72,12 +75,11 @@ class Wraithlord(Model):
         starCannon=Weapon("Star Cannon",36,6,2,"shooting",specialRules=["Heavy"],shots= 2)
         shurikenCatapult=Weapon("Shuriken Catapult",12,4,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"])
         shurikenCannon=Weapon("Shuriken Cannon",24,6,5,"shooting",shots= 3,specialRules=["Assault", "Bladestorm"])
-        shurikenCannonTL=Weapon("Shuriken Cannon (TL)",24,6,5,"shooting",shots= 3,specialRules=["Assault", "Bladestorm","Twinlinked"])
         brightLance=Weapon("Bright Lance",36,8,2,"shooting",shots= 1,specialRules=["Heavy", "Lance"])
-        brightLanceTL=Weapon("Bright Lance (TL)",36,8,2,"shooting",shots= 1,specialRules=["Heavy", "Lance","Twinlinked"])
-        self.weaponPool=[flamer,scatterLaser,starCannon, shurikenCatapult, shurikenCannon, brightLance, brightLanceTL]
+        ghostGlave=Weapon("Ghost Glave","-","+1",2,"melee",specialRules=["Master-Crafted"])
+        self.weaponPool={a.name:a for a in [flamer,scatterLaser,starCannon, shurikenCatapult, shurikenCannon, brightLance, ghostGlave]}
         #self.addWeapons([scatterLaser, shurikenCatapult,shurikenCatapult, shurikenCannon,shurikenCannonTL,brightLance, brightLanceTL])
-        self.addWeapons([scatterLaser, shurikenCannon,flamer])
+        #self.addWeapons([scatterLaser, shurikenCannon,flamer])
 
 
         #self.addWeapons([shurikenCatapult])

@@ -3,11 +3,12 @@ import pickle
 from termcolor import colored
 from getch import getch
 #TODO: Turn this into a rules database with functions to update it from BS files.  Use sqlite? Or just serialisation?
+#TODO: sanitise latex output more sensibly. What if it's already escaped, for ex.
 class Rules(object):
     """
     """
     
-    def __init__(self,fn=None, data=None):
+    def __init__(self,fn=None, data=None, sanitiseLatex=True):
         """
         
         Arguments:
@@ -19,6 +20,7 @@ class Rules(object):
             self.rules=pickle.load(open(fn,"r"))
         if data!=None:
             self.rules=data
+        self.sanitiseLatex=sanitiseLatex
     def save(self,fn=None):
         if fn==None and self.fn!=None:
             fn=self.fn
@@ -36,7 +38,9 @@ class Rules(object):
 
     def __getitem__(self,key):
         if self.rules.has_key(key):
-            return self.rules[key].encode("ASCII", errors='replace')
+            val=self.rules[key].encode("ASCII", errors='replace')
+            val=val.replace("&","\\&")
+            return val
         else:
             return "Unknown rule"
     def __setitem__(self, key,value):

@@ -41,6 +41,9 @@ def sanitiseName(n):
     allowed="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
     return "".join([i if i in allowed else "" if i!=" " else "_" for i in n])
 
+def sanitiseForLatex(n):
+    return n.replace("&","\\&")
+
 class Weapon(object):
     """
     """
@@ -251,12 +254,18 @@ class Model(object):
                 return True
         return False
     def addRule(self,rule):
+
         if self.hasRule(rule):
             return
 
             
         if rule=="Independent Character":            
             self.addBasic("Independent Character")
+        if rule.upper()=="Mantle of the Laughing God".upper():
+            self.addRules(["Stealth","Shrouded","Hit & Run"])
+            self.addBasic("2+ cover save when moving (Mantle)")
+            self.addBasic("Loses IC status (Mantle)")
+
         if rule=="Battle Focus" and self.type !="Eldar Jetbike":
             self.moveStats["run"]+="(Battle focus allows shoot+run in any order)"
         if rule=="Fleet":
@@ -282,6 +291,7 @@ class Model(object):
             for i in ["Fear","Hammer of Wrath", "Move Through Cover", "Relentless" , "Smash"]:
                 self.addRule(i)
         self.rules.append(rule)
+
     def addRules(self,rules):
         for r in rules: self.addRule(r)
     def addWeapon(self,w):
@@ -406,13 +416,14 @@ class Model(object):
         extraAttacks={True:"(Includes dual wielding bonus)",False:""}[meleeCount==1]
         if self.hasRule("Mandiblasters"):
             extraAttacks+="(Plus Mandiblaster attack)"
+        extraAttacks+={True:"(Remember to resolve \\textbf{Hammer of Wrath} wounds too)",False:""}["Hammer of Wrath" in self.rules]          
         if self.hasRule("Fleet"):
             extraAttacks+=" \\item[Fleet] allows one charge-range die to be rereolled"
         if self.hasRule("Rage"):
             extraAttacks+="(Rage: Add 2 attacks on charge, not 1)"
 
         profileAssault="""\\begin{{description}}
-        \\item[Attacks] {attacks} (Remember to add an attack if charging) {extraAttacks} {hammerExtra}
+        \\item[Attacks] {attacks} (Remember to add an attack if charging) {extraAttacks}
         \\item[Charge] {charge}
         \\item[Charge through terrain] {chargeTerrain}
         \\end{{description}}
@@ -426,13 +437,14 @@ class Model(object):
 
         {weapons}
         
-        """.format(attacks=self.a+meleeCount, extraAttacks=extraAttacks,weapons=assaultWeapons, hammerExtra={True:"(Remember to resolve \\textbf{Hammer of Wrath} wounds too)",False:""}["Hammer of Wrath" in self.rules],charge=self.moveStats["charge"],chargeTerrain=self.moveStats["chargeTerrain"],unodProfileHit=self.assaultToHit(),unodProfileWound=self.hands.woundProfile())
+        """.format(attacks=self.a+meleeCount, extraAttacks=extraAttacks,weapons=assaultWeapons,charge=self.moveStats["charge"],chargeTerrain=self.moveStats["chargeTerrain"],unodProfileHit=self.assaultToHit(),unodProfileWound=self.hands.woundProfile())
         
         weaponShort="""        \\begin{itemize}
         %s
         \end{itemize}"""%("\n".join(["\\item %s (%s)"%(n.name, n.type[0].upper()) for n in self.weapons ]))
         if len(self.weapons)<1: weaponShort="This model has no weapons"
-        specialRules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(i,r[i]) for i in self.rules]))
+        specialRules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(sanitiseForLatex(i),r[i]) for i in self.rules]))
+
         if len(self.rules)<1: specialRules="This model has no special rules."
         out= """\\documentclass[10pt,a4paper,twocolumn]{{article}}
         \\title{{{0.name}}}

@@ -198,7 +198,7 @@ def meleeToHit(wsA,wsB):
     
 def genMeleeStatsBasic(wsA,wsB, weaponStrength, targetToughness, ap=None,  save=None,inv=None, reRoll=None, fleshbane=False):
     #TODO: hammer of wrath, etc?
-    if reRoll=None: reRoll=[]
+    if reRoll==None: reRoll=[]
     toHit=meleeToHit(wsA,wsB)
 
     d=Die()

@@ -9,5 +9,5 @@ boltPistol=Weapon("Bolt Pistol", 12,4,5,"shooting",specialRules=["Pistol"])
 plasmaGrenades=Weapon("Plasma Grenades","8/-",4,4,"shooting",specialRules=["Assault","Blast","No Charge/Cover Penalty"])
 
 
-singingSpearDuo=[Weapon("Singing Spear","-","User","-","melee",specialRules=["Melee","Armourbane","Fleshbane"]),
-              Weapon("Singing Spear",12,9,"-","shooting",specialRules=["Assault","Fleshbane"])]
+singingSpearDuo=[Weapon("Singing Spear (melee)","-","X","-","melee",specialRules=["Melee","Armourbane","Fleshbane"]),
+              Weapon("Singing Spear (shooting)",12,9,"-","shooting",specialRules=["Assault","Fleshbane"])]

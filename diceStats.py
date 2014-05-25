@@ -138,6 +138,9 @@ def genShotStatsBasic(bs,weaponStrength, targetToughness, ap=None, cover=None, s
         d.rollReplace("MISS",v2,"HIT","MISS")
     
     woundRequired=pieces.shootToWoundIndividual(weaponStrength,targetToughness)
+    instagib=False
+    if woundRequired.endswith("D"):
+        instagib=True
     woundRequired=int(woundRequired[0]) if woundRequired[0]!="-" else "8"
 
     on={}
@@ -150,6 +153,9 @@ def genShotStatsBasic(bs,weaponStrength, targetToughness, ap=None, cover=None, s
 
     d.toWound(woundRequired,on=on)
 
+    if "failedWound" in reRoll:
+        d.rollReplace("FAIL",woundRequired,d,"FAIL",on=on)
+    
     if save!=None and ap!=None and ap<=save:
         save=None
     best=min([cover if cover!=None else 100,save if save!=None else 100,inv if inv!=None else 100])
@@ -161,7 +167,7 @@ def genShotStatsBasic(bs,weaponStrength, targetToughness, ap=None, cover=None, s
         elif best==save:
             saveName="SAVE(armour)"
         d.save(best,saveAlt=saveName)
-        if saveName=="SAVE(cover)" and "cover" in reRoll:
+        if (saveName=="SAVE(cover)" and "cover" in reRoll) or "allsaves" in reRoll:
             d.save(best,saveAlt=saveName)
     #Bladestorm saves
     if bladestorm:
@@ -175,9 +181,10 @@ def genShotStatsBasic(bs,weaponStrength, targetToughness, ap=None, cover=None, s
             elif best==inv:
                 saveName="SAVE(inv)"
             d.save(best,saveWhat="WOUND_bs",saveAlt=saveName)
-            if saveName=="SAVE(cover)" and "cover" in reRoll:
+            if (saveName=="SAVE(cover)" and "cover" in reRoll) or "allsaves" in reRoll:
                 d.save(best,saveAlt=saveName)
 
+        
     
     return d
     #return 

@@ -45,8 +45,7 @@ class DireAvenger(Model):
         self.addRules(["Ancient Doom", "Battle Focus", "Counter-attack", "Fleet"])
 class Guardian(Model):
     def __init__(self, name="Guardian"):
-        Model.__init__(self,name,4,4,3,3,1,5,1,8,"5(3)+")
-        self.addBasic("Bracketed values refer to the support weapon")
+        Model.__init__(self,name,4,4,3,3,1,5,1,8,"5+")
         self.addRules(["Battle Focus","Ancient Doom","Bladestorm", "Fleet"])
 
         self.addWeapon(Weapon("Shuriken Catapult",12,4,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"]))
@@ -55,12 +54,11 @@ class Guardian(Model):
 
 class EldarSupportWeapon(Model):
     def __init__(self, name="Heavy Weapon Platform"):
-        pass
+        Model.__init__(self,name,0,0,0,5,0,0,0,0,"3+")
 
-                         
-        hwp=Weapon("Heavy Weapon Platform (Shuriken Cannon)",24,6,5,"shooting",shots=3,specialRules=["Assault","Bladestorm","HWP"])
-        self.addWeapon(hwp)
-
+        
+        self.addWeapon(Weapon("Star Cannon",36,6,2,"shooting",specialRules=["Heavy"],shots= 2))
+        self.addRule("Relentless")
         
 
 
@@ -92,6 +90,15 @@ class SpaceMarine(Model):
 
         self.addWeapons([weapons.boltGun,weapons.boltPistol])
 
+class Terminator(Model):
+    def __init__(self, name):      
+
+        Model.__init__(self,name,4,4,4,4,1,4,2,9,"2+",inv="5+",modelType="Infantry")
+        self.addRules(["And They Shall Know No Fear"])
+
+        self.addWeapons([weapons.boltGun,weapons.boltPistol])
+
+        
 class Scout(Model):
     def __init__(self, name):
         """

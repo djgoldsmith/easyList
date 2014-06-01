@@ -54,11 +54,11 @@ def shoot(a,b, squadSize=1, specials=[]):
         #print d
     print "-"*80
 
-def melee(a,b):
+def melee(a,b, aSize,bSize):
     reRolls=[]
     if b.i > a.i:
         b,a=a,b
-    for pair in ((a,b),(b,a)):        
+    for pair in ((a,b, aSize, bSize),(b,a, bSize,aSize)):        
         print "%s strikes %s at I%d"%(pair[0].name,pair[1].name,pair[0].i)
         for w in pair[0].weapons+[pair[0].hands]:
             if w.type=="melee" or w.hasRule("Pistol"):
@@ -72,8 +72,8 @@ def melee(a,b):
                     continue
                 else:
                     chance=vals["WOUND"]
-                    wounds=pair[1].w
-                    attacks=pair[0].attacks()
+                    wounds=pair[1].w*pair[2]
+                    attacks=pair[0].attacks()*pair[3]
                     print "\tAttack %0.2f successful.  \n\tAttacks per round of %d \n\t\tagainst %d-wound enemy leads to \n\t\t%0.1f rounds until victory."%(chance,attacks,wounds,wounds/(chance*attacks))
         print
                     

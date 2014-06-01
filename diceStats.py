@@ -140,7 +140,7 @@ def genShotStatsBasic(bs,weaponStrength, targetToughness, ap=None, cover=None, s
     woundRequired=pieces.shootToWoundIndividual(weaponStrength,targetToughness)
     instagib=False
     if woundRequired.endswith("D"):
-        instagib=True
+        instagibstagib=True
     woundRequired=int(woundRequired[0]) if woundRequired[0]!="-" else "8"
 
     on={}
@@ -266,3 +266,4 @@ if __name__ == '__main__':
 
 # #print d
 # print d.statString()
+

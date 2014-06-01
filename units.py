@@ -26,7 +26,7 @@ class Farseer(Model):
         else:
             rules.append("Independent Character")
             
-        Model.__init__(self,"Farseer", 5,5,3,toughness,1,5,1,10,armour, inv="4++", modelType="Infantry" if not jetbike else "Eldar Jetbike")
+        Model.__init__(self,"Farseer", 5,5,3,toughness,3,5,1,10,armour, inv="4++", modelType="Infantry" if not jetbike else "Eldar Jetbike")
         self.addRules(rules)
         self.addBasic("Choose psychic powers from Divination, Runes of Fate or Telepathy")
         if spear:
@@ -57,7 +57,7 @@ class EldarSupportWeapon(Model):
         Model.__init__(self,name,0,0,0,5,0,0,0,0,"3+")
 
         
-        self.addWeapon(Weapon("Star Cannon",36,6,2,"shooting",specialRules=["Heavy"],shots= 2))
+        self.addWeapon(weapons.scatterLaser)
         self.addRule("Relentless")
         
 
@@ -86,10 +86,20 @@ class SpaceMarine(Model):
     def __init__(self, name):      
 
         Model.__init__(self,name,4,4,4,4,1,4,1,8,"3+",modelType="Infantry")
-        self.addRules(["And They Shall Know No Fear", "Combat Squads","Chapter Tactics (Ultramarines)"])
+        self.addRules(["And They Shall Know No Fear", "Combat Squads"])
 
-        self.addWeapons([weapons.boltGun,weapons.boltPistol])
 
+
+class Librarian(SpaceMarine):
+    def __init__(self,name="Librarian"):
+        SpaceMarine.__init__(self,name)
+        self.ws=5
+        self.w=2
+        self.a=2
+        self.ld=10
+        self.rules.remove("Combat Squads")
+        self.addRules(["Independent Character", "Psyker ML2"])
+        
 class Terminator(Model):
     def __init__(self, name):      
 

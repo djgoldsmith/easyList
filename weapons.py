@@ -1,6 +1,10 @@
 
 from pieces import  Weapon
 
+meltaGun=Weapon("Melta Gun",12,8,1,"shooting",specialRules=["Assault","Melta"])
+fragGrenade=Weapon("Frag Grenades",8,3,"-","shooting",specialRules=["Assault","Blast"])
+krakGrenade=Weapon("Krak Grenades", 8,6,4,"shooting",specialRules=["Assault"])
+
 shurikenPistol=Weapon("Shuriken Pistol",12,4,5,"shooting",1,specialRules=["Pistol", "Bladestorm"])
 witchBlade=Weapon("WitchBlade","-","User","-","melee",specialRules=["Melee","Armourbane","Fleshbane"])
 twinlinkedShurikenCatapult=Weapon("Twin-Linked Shuriken Catapult",12,4,5,"shooting",shots= 2,specialRules=["Assault", "Bladestorm", "Twin-Linked"])
@@ -18,6 +22,7 @@ forceStave=Weapon("Force Stave","-","+2",4,"melee",specialRules=["Melee","Force"
 
 
 heavyBolter=Weapon("Heavy Bolter",36,5,4,"shooting",specialRules=["Heavy 3"])
+stormBolter=Weapon("Storm Bolter",24,4,5,"shooting",shots=2,specialRules=["Assault"])
 
 mlFrag=Weapon("Missile Launcher (Frag)",48,4,6,"shooting",specialRules=["Heavy 1", "Blast"])
 
@@ -31,8 +36,10 @@ sniperRifle=Weapon("Sniper Rifle",36,"-",6,"shooting",specialRules=["Heavy 1", "
 
 flamer=Weapon("Flamer","Template",4,5,"shooting",specialRules=["Assault"])
 scatterLaser=Weapon("Scatter Laser",36,6,6,"shooting",shots=4,specialRules=["Heavy", "Laser Lock"])
+scatterLaserTL=Weapon("Twin-Linked Scatter Laser",36,6,6,"shooting",shots=4,specialRules=["Heavy", "Laser Lock", "Twin-Linked"])
 starCannon=Weapon("Star Cannon",36,6,2,"shooting",specialRules=["Heavy"],shots= 2)
 shurikenCatapult=Weapon("Shuriken Catapult",12,4,5,"shooting",shots=2,specialRules=["Bladestorm","Assault"])
 shurikenCannon=Weapon("Shuriken Cannon",24,6,5,"shooting",shots= 3,specialRules=["Assault", "Bladestorm"])
 brightLance=Weapon("Bright Lance",36,8,2,"shooting",shots= 1,specialRules=["Heavy", "Lance"])
 ghostGlave=Weapon("Ghost Glave","-","+1",2,"melee",specialRules=["Master-Crafted"])
+assaultCannon=Weapon("Assault Cannon",24,6,4,"shooting",shots=4,specialRules=["Heavy", "Rending"])

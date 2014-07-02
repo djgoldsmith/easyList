@@ -87,8 +87,17 @@ class SpaceMarine(Model):
 
         Model.__init__(self,name,4,4,4,4,1,4,1,8,"3+",modelType="Infantry")
         self.addRules(["And They Shall Know No Fear", "Combat Squads"])
+        self.addWeapon(weapons.boltPistol)
 
-
+class Ravenwing(SpaceMarine):
+    def __init__(self,name="RavenWing"):
+        Model.__init__(self,name,4,4,4,5,1,4,1,8,"3+",modelType="Bike")
+        self.addRules(["And They Shall Know No Fear", "Ravenwing Combat Squads", "Scouts", "Hit & Run", "Grim Resolve"])
+        self.addWeapon(weapons.boltPistol.tl())
+        self.addWeapon(weapons.meltaGun)
+        self.addWeapon(weapons.fragGrenade)
+        self.addWeapon(weapons.krakGrenade)        
+        
 
 class Librarian(SpaceMarine):
     def __init__(self,name="Librarian"):
@@ -99,15 +108,30 @@ class Librarian(SpaceMarine):
         self.ld=10
         self.rules.remove("Combat Squads")
         self.addRules(["Independent Character", "Psyker ML2"])
+
+class Avatar(Model):
+    def __init__(self, name="Avatar of Khaine", fastShot=False, crushingBlow=False):
+        """
+        
+        Arguments:
+        - `name`:
+        """
+        Model.__init__(self,name,10,10,6,6,5,10,5,10,"3+",inv="5+",modelType="Infantry")
+        self.addRules(["Ancient Doom","Battle Focus", "Daemon", "Fearless", "Fleet", "Khaine Awakened", "Molten Body"])
+        self.addWeapon(Weapon("Wailing Doom",12, 8, 1, "shooting", shots=(1 if (not fastShot) else 2), specialRules=["Assault 1", "Melta"]))
+        self.addWeapon(Weapon("Wailing Doom (melee)","-", "User", 1, "melee"))
+        if crushingBlow:
+            self.s+=1
         
 class Terminator(Model):
-    def __init__(self, name):      
+    def __init__(self, name, stormShield=False):      
 
         Model.__init__(self,name,4,4,4,4,1,4,2,9,"2+",inv="5+",modelType="Infantry")
         self.addRules(["And They Shall Know No Fear"])
 
         self.addWeapons([weapons.boltGun,weapons.boltPistol])
-
+        if stormShield:
+            self.inv="3+"
         
 class Scout(Model):
     def __init__(self, name):

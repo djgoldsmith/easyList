@@ -4,6 +4,11 @@ from termcolor import colored
 from getch import getch
 #TODO: Turn this into a rules database with functions to update it from BS files.  Use sqlite? Or just serialisation?
 #TODO: sanitise latex output more sensibly. What if it's already escaped, for ex.
+def sanitiseCSV(s):
+    return s.replace(",","&COMMA").replace(u'\u2022',"").replace(u'\u2019',"").replace("\n","&CRLF")
+
+def reverseCSV(s):
+    return s.replace("&CRLF","\n").replace("&COMMA",",")
 class Rules(object):
     """
     """
@@ -29,6 +34,36 @@ class Rules(object):
         f=open(fn,"w")
         pickle.dump(self.rules,f)
         f.close()
+    def importCSV(self,fn):
+        """Import rules from CSV file"""
+        f=open(fn,"r")
+        for l in f.readlines():
+            #print l, len(l.split(",")),l.split(",")
+            k,r=l[:-1].split(",")
+            k=reverseCSV(k)
+            r=reverseCSV(r)
+            #print k,r
+            self.rules[k]=r
+        f.close()
+    def exportCSV(self,fn):
+        """ Exports rules as CSV file"""
+        keys=self.rules.keys()
+        keys.sort()
+        f=open(fn,"w")
+
+        for k in keys:
+            # for c in self.rules[k]:
+            #     try:
+            #         print ord(c),c,
+            #         rule+=c
+            #     except:
+            #         print 0,0,
+            #         rule+="?"
+
+            #print
+            f.write( "%s, %s\n"%(sanitiseCSV(k), sanitiseCSV(self.rules[k])))
+        f.close()
+
     def keys(self):
         return self.rules.keys()
     def __iter__(self, ):
@@ -132,7 +167,13 @@ def loadHelper(rules,cat):
                 else:
                     print "Enter A or B. Try again."
 if __name__ == '__main__':
-    r=Rules("/home/james/tmp/easyList/rules.r")
+    r=Rules("./rules.r")
+
+    #r.exportCSV("rules.csv")
+    #r.importCSV("rules.csv")
+    #r.save()
+
+
     # r["Assault"]="A weapon that can be fired in the shooting phase without preventing the firer from assaulting in the assault phase"
     # r.save()
     # cats=["ChaosSpaceMarines.cat", "Dark_Angels_6th_FAQ_1-13-2013.cat", "Eldar - 2013.cat", "Eldar.cat", "Fortifications.cat", "Orks 6th Ed (2008).cat"]
@@ -145,13 +186,13 @@ if __name__ == '__main__':
     #     #break
     # print "-"
     #    print r["Assault"]
-    loadHelper(r,"/home/james/bin/battlescribe_/previous_version/catalogues/Eldar.cat")
-    for i in r:
+    #loadHelper(r,"/home/james/bin/battlescribe_/previous_version/catalogues/Eldar.cat")
+    # for i in r:
         
-        print """[%s] %s \n"""%(i,r[i])
-        print "-"*20
+    #     print """[%s] %s \n"""%(i,r[i])
+    #     print "-"*20
 
-    r.save()
+    # r.save()
     #print len(r.rules)
     #print r.rules[0].attributes["name"].value
 

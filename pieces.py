@@ -9,25 +9,26 @@ validWeaponTypes=["shooting","melee"]
 toHitStats=["-","6","5","4","3","2","2/6","2/5","2/4","2/3","2/2"]
 
 moveStats={}
-moveStatLines=[("Infantry",6,"max(2d6)","2d6","Run D6","2d6","3D6, discarding highest",""),
-               ( "Jump",12,"Starting or ending in difficult terrain requires a dangerous terrain test","3d6","2d6, may re-roll both dice","3D6, discarding highest, can re-roll all dice. Must take Dangerous Terrain test if starting or ending in difficult terrain","Run D6","When not 'jumping', move distance and difficult terrain behaviour are inherited from the base type, but fallback is still 3d6"),
-               ( "Beast",12,"No effect","3D6","Run D6","2d6","No effect.",""),
-               ( "Cavalry",12,"Count as dangerous","3d6","Run D6","2d6","2D6, take dangerous terrain test",""),
-               ( "Bike",12,"Count as dangerous","3d6","Turbo-Boost 12","2d6","2D6, take dangerous terrain test",""),
-               ( "Jetbike",12,"Starting or ending in difficult terrain requires a dangerous terrain test","3d6","Turbo-Boost 24","2d6","2D6, take dangerous terrain test if beginning or ending in difficult terrain",""),
-               ( "Eldar Jetbike",12,"Starting or ending in difficult terrain requires a dangerous terrain test","3d6","Turbo-Boost 36","2D6","2D6, take dangerous terrain test if beginning or ending in difficult terrain",""),
-               ( "Monstrous Creature",6,"max(3d6)","2d6","Run D6","2d6","3D6, discarding highest",""),
-               ( "Artillery",6,"max(2d6)","2d6","Run D6","2d6","3D6, discarding highest",""),
+moveStatLines = [("Infantry"          ,6,"max(2d6)","2d6","Run D6","2d6","3D6, discarding highest",""),
+               ( "Jump"               ,12,"Starting or ending in difficult terrain requires a dangerous terrain test","3d6","2d6, may re-roll both dice","3D6, discarding highest, can re-roll all dice. Must take Dangerous Terrain test if starting or ending in difficult terrain","Run D6","When not 'jumping', move distance and difficult terrain behaviour are inherited from the base type, but fallback is still 3d6"),
+               ( "Beast"              ,12,"No effect","3D6","Run D6","2d6","No effect.",""),
+               ( "Cavalry"            ,12,"Count as dangerous","3d6","Run D6","2d6","2D6, take dangerous terrain test",""),
+               ( "Bike"               ,12,"Count as dangerous","3d6","Turbo-Boost 12","2d6","2D6, take dangerous terrain test",""),
+               ( "Jetbike"            ,12,"Starting or ending in difficult terrain requires a dangerous terrain test","3d6","Turbo-Boost 24","2d6","2D6, take dangerous terrain test if beginning or ending in difficult terrain",""),
+               ( "Eldar Jetbike"      ,12,"Starting or ending in difficult terrain requires a dangerous terrain test","3d6","Turbo-Boost 36","2D6","2D6, take dangerous terrain test if beginning or ending in difficult terrain",""),
+               ( "Monstrous Creature" ,6,"max(3d6)","2d6","Run D6","2d6","3D6, discarding highest",""),
+               ( "Artillery"          ,6,"max(2d6)","2d6","Run D6","2d6","3D6, discarding highest",""),
 
-               ( "Jetpack",6,"Starting or ending in difficult terrain requires a dangerous terrain test","2d6", "run D6",
-                 "2d6","2D6, take dangerous terrain test if beginning or ending in difficult terrain (or just 3d6\" discarding highest if not using Jet Pack)","when not using the jetpack, move distance and difficult terrain behaviour are inherited from the base type, and fallback is 2d6"),
+               ( "Jetpack"            ,6,"Starting or ending in difficult terrain requires a dangerous terrain test","2d6", "run D6",
+                 "2d6"                ,"2D6, take dangerous terrain test if beginning or ending in difficult terrain (or just 3d6\" discarding highest if not using Jet Pack)","when not using the jetpack, move distance and difficult terrain behaviour are inherited from the base type, and fallback is 2d6"),
 
-               ( "Skimmer",12,"Starting or ending in difficult terrain requires a dangerous terrain test","N/A","Flat-Out 6","To be done!","To be done!",""),
-               ( "Walker",6,"max(2d6)","N/A","Run D6","2d6","3D6, discarding highest",""),
-               ( "Fast Skimmer",12,"Dangerous terrain test","N/A","Flat-Out 18","To be done!","To be done!",""),
-               ( "Fast",12,"Dangerous terrain test","N/A","Flat-Out 12","To be done!","To be done!",""),
-               ( "Vehicle",12,"Dangerous terrain test","N/A","Flat-Out 6","To be done!","To be done!","")
+               ( "Skimmer"            ,12,"Starting or ending in difficult terrain requires a dangerous terrain test","N/A","Flat-Out 6","To be done!","To be done!",""),
+               ( "Walker"             ,6,"max(2d6)","N/A","Run D6","2d6","3D6, discarding highest",""),
+               ( "Fast Skimmer"       ,12,"Dangerous terrain test","N/A","Flat-Out 18","To be done!","To be done!",""),
+               ( "Fast"               ,12,"Dangerous terrain test","N/A","Flat-Out 12","To be done!","To be done!",""),
+               ( "Vehicle"            ,12,"Dangerous terrain test","N/A","Flat-Out 6","To be done!","To be done!","")
                ]
+
 for i in moveStatLines:
 
     moveStats[i[0]]={"move":i[1],"terrain":i[2],"fallback":i[3],"run":i[4],"notes":i[7],"charge":i[5],"chargeTerrain":i[6]} 
@@ -73,7 +74,11 @@ class Weapon(object):
                 self.addSpecialRule(i)
         self.hitExtras=hitExtras
         self.woundExtras=woundExtras
-
+    def tl(self):
+        c=self.clone()
+        c.addSpecialRule("Twin-Linked")
+        return c
+        
     def clone(self):
         return Weapon(self.name, self.range, self._strength, self._ap, self.type, shots=self.shots, specialRules=list(self._specialRules),woundExtras=self.woundExtras,wielder=None)
                       
@@ -143,16 +148,16 @@ class Weapon(object):
             if not (willDouble and self.type!="melee"):
 
                 if willDouble:
-                    out+="\\vspace{1em}\\\\Smash (halve attacks)\\\\"
+                    out+="\\vspace{1em}\\\\Smash (One attack only)\\\\"
                 out+= """\\begin{{tabular}}{{l|l|l|l|l|l|l|l|l|l|l|}}
             \\begin{{turn}}{{45}}T\\end{{turn}} & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\\\ \\hline
                 \\begin{{turn}}{{45}}Roll\\end{{turn}} & {0}
             \\end{{tabular}}""".format(toWound)
                 if self.type=="melee" and self.wielder!=None and self.wielder.hasRule("Furious Charge"):
-                    toWound=[str(shootToWoundIndividual(self.strength+1,n+1)) for n in range(10)]
+                    toWound=[str(shootToWoundIndividual(10,n+1)) for n in range(10)]
                     toWound=" & ".join(toWound)
                     if self.hasRule("Poisoned"):
-                        toWound=" & ".join(["4" if i>self.strength+1 else "4r" for i in range(1,11)])
+                        toWound=" & ".join(["4" if i>10 else "4r" for i in range(1,11)])
                     elif self.hasRule("Fleshbane"):
                         toWound=" & ".join(["2"]*10)
 
@@ -290,6 +295,9 @@ class Model(object):
         if rule.upper()=="MONSTROUS CREATURE":
             for i in ["Fear","Hammer of Wrath", "Move Through Cover", "Relentless" , "Smash"]:
                 self.addRule(i)
+        if rule.upper()=="DAEMON":
+            self.addRule("Fear")
+            
         self.rules.append(rule)
 
     def addRules(self,rules):
@@ -513,7 +521,9 @@ class Vehicle(Model):
         self.front=front
         self.side=side
         self.rear=rear
+        self.bs=bs
         self.classType="vehicle"
+        self.addRule("Relentless")
 #TODO: assult section when open-topped
     def basicTable(self):
         return """ \\begin{{tabular}}{{p{{4ex}}p{{4ex}}p{{4ex}}p{{4ex}}p{{12ex}}}}

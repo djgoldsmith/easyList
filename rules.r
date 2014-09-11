@@ -615,9 +615,9 @@ sVMandiblaster
 p307
 S' (Unverified in 7th)During the Fight sub-phase, at the Initiative 10 step, a model with mandiblasters automatically inflicts a single Strength 3 AP- hit on one enemy unit in base contact. If a model with a mandiblaster is in a challenge, this hit must be directed against his opponent. Mandiblasters are not affected by special rules that reduce Initiative. (Source: ??)'
 p308
-sVThe Destroyer Hive
+sVIron Resolve
 p309
-S' (Unverified in 7th)Once per game, in any Assault phase, Typhus can unleash the Destroyer Hive instead of attacking. At the start of Typhus\' Initiative Step, place a large blast marker with the hole centered over Typhus (this does not scatter). All units (friend and foe) suffer a number of hits equal to the number of models from their unit that are at least partially under the large blast marker. These hits are resolved at S4 AP2 and have the "Ignores Cover" special rule. Do not count Typhus when working out how many hits are caused. Wounds from this attack cannot be allocated to Typhus.(Source: ??)'
+S' (Unverified in 7th)This model has a +1 Leadership.(Source: Codex Eldar, p.30)'
 p310
 sVMob Rule
 p311
@@ -783,9 +783,9 @@ sVDeff Rolla
 p391
 S' (Unverified in 7th)A Battlewagon with a deff rolla may re-roll Dangerous Terrain tests. Any Tank Shock made by a Battlewagon with a deff rolla causes D6 Strength 10 hits on the victim unit. If the unit elects to make a Death or Glory attack, it takes a further D6 Strength 10 hits in addition to the usual effects.(Source: ??)'
 p392
-sVIron Resolve
+sVThe Destroyer Hive
 p393
-S' (Unverified in 7th)This model has a +1 Leadership.(Source: Codex Eldar, p.30)'
+S' (Unverified in 7th)Once per game, in any Assault phase, Typhus can unleash the Destroyer Hive instead of attacking. At the start of Typhus\' Initiative Step, place a large blast marker with the hole centered over Typhus (this does not scatter). All units (friend and foe) suffer a number of hits equal to the number of models from their unit that are at least partially under the large blast marker. These hits are resolved at S4 AP2 and have the "Ignores Cover" special rule. Do not count Typhus when working out how many hits are caused. Wounds from this attack cannot be allocated to Typhus.(Source: ??)'
 p394
 sVPsyker ML4
 p395
@@ -1119,372 +1119,376 @@ sVMelta
 p559
 S" (Unverified in 7th)Ranged weapons with this special rule roll an additional D6 when rolling to penetrate a vehicle's Armour at half range or less. If the weapon is more than half its maximum range, it rolls to penetrate as normal.(Source: 40k Rulebook, p.39)"
 p560
-sVGrot Oiler
+sS'Open-Topped'
 p561
-S' (Unverified in 7th)Codex: Orks (pg 34)(Source: ??)'
+S' \\begin{description}\\item[OPEN-TOPPED VEHICLES]Some vehicles have only a little armour, making them more vulnerable to damage because of their lightweight construction. However, such vehicles make for excellent assault transports as their passengers can disembark with much greater ease. \\item[THE VEHICLE DAMAGE TABLE] A lack of armour leaves vital parts of these vehicles vulnerable. If a vehicle is Open-topped, add 1 to any rolls made on the Vehicle Damage table (this is cumulative with other modifiers). \\item[OPEN-TOPPED TRANSPORTS] Open-topped vehicles do not have specific Access Points. Instead, all of the vehicle is considered to be an Access Point (regardless of any base they may have). \\item[Passengers Shooting from Open-topped Transports] Open-topped Transports do not have specific Fire Points. Instead, all passengers in an Open-topped Transport can fire, measuring range and line of sight from any point on the hull of the vehicle. \\item[Passengers Charging from Open-topped Transports] Acting as an ideal attack platform, all Open-topped Transports have the Assault Vehicle special rule.\\end{description}'
 p562
-sVMaster of the Rubricae
+sVGrot Oiler
 p563
-S' (Unverified in 7th)In a primary detachment that includes a Sorcerer with the Mark of Tzeentch, Thousand Sons are troops choices instead of elites.(Source: ??)'
+S' (Unverified in 7th)Codex: Orks (pg 34)(Source: ??)'
 p564
-sVRunes of Witnessing
+sVMaster of the Rubricae
 p565
-S' (Unverified in 7th)One use only. If the Farseer fails a Psychich test, he can use these runes to re-roll the test (potentially negating Perils of the Warp in the process). (Source: Codex Eldar, p.28)'
+S' (Unverified in 7th)In a primary detachment that includes a Sorcerer with the Mark of Tzeentch, Thousand Sons are troops choices instead of elites.(Source: ??)'
 p566
-sVGrabba Stik
+sVRunes of Witnessing
 p567
-S' (Unverified in 7th)Codex: Orks (pg 50)(Source: ??)'
+S' (Unverified in 7th)One use only. If the Farseer fails a Psychich test, he can use these runes to re-roll the test (potentially negating Perils of the Warp in the process). (Source: Codex Eldar, p.28)'
 p568
-sVZzap Gun (Vehicle Mounted)
+sVGrabba Stik
 p569
-S" (Unverified in 7th)Each time a Zzap gun is fired roll 2D6 to determine its Strength. When they score glancing or penetrating hits against vehicles, Zzap guns automatically cause a 'Crew Shaken' result in addition to any other effects.(Source: ??)"
+S' (Unverified in 7th)Codex: Orks (pg 50)(Source: ??)'
 p570
-sVEldar Jetbike
+sVZzap Gun (Vehicle Mounted)
 p571
-S' (Unverified in 7th)Move up to 12" in the Movement phase. \n\nJetbikes can always move over all other models and all terrain freely. However, if a moving Jetbike begins or ends its move in difficult terrain, it must take a Dangerous Terrain test. Jetbikes cannot end their move over other models or impassable terrain, except that they can end their move on top of impassable terrain if it is actually possible to place the models on top of it. If they do that, however, they treat the impassable terrain as dangerous terrain.\n\nJetbikes fall back 3D6".\n\nJetbikes cannot Go to Ground, and cannot be Pinned.\n\nCharges are not slowed by difficult terrain. However, each Jetbike model that charges an enemy model behind a barricade or Aegis defense line, must take a Dangerous Terrain test.\n\nTurbo-boost: move up to 36" instead of firing in their Shooting phase. They cannot shoot, charge or execute any other voluntary action for the rest of the turn after Turbo-boosting.\n\nMay move up to 2D6" in the Assault phase, even if they don\'t charge and even if they arrived by Deep Strike that turn. They treate difficult terrain the same wasy as during the movement phase.(Source: 40k Rulebook, p.45)'
+S" (Unverified in 7th)Each time a Zzap gun is fired roll 2D6 to determine its Strength. When they score glancing or penetrating hits against vehicles, Zzap guns automatically cause a 'Crew Shaken' result in addition to any other effects.(Source: ??)"
 p572
-sS'Specialist Weapon'
+sVEldar Jetbike
 p573
-S' (Unverified in 7th)A model fighting with this weapon does not receive the +1 attack for fighting with two weapons unless both weapons have the Specialist Weapon rule (brb p42) '
+S' (Unverified in 7th)Move up to 12" in the Movement phase. \n\nJetbikes can always move over all other models and all terrain freely. However, if a moving Jetbike begins or ends its move in difficult terrain, it must take a Dangerous Terrain test. Jetbikes cannot end their move over other models or impassable terrain, except that they can end their move on top of impassable terrain if it is actually possible to place the models on top of it. If they do that, however, they treat the impassable terrain as dangerous terrain.\n\nJetbikes fall back 3D6".\n\nJetbikes cannot Go to Ground, and cannot be Pinned.\n\nCharges are not slowed by difficult terrain. However, each Jetbike model that charges an enemy model behind a barricade or Aegis defense line, must take a Dangerous Terrain test.\n\nTurbo-boost: move up to 36" instead of firing in their Shooting phase. They cannot shoot, charge or execute any other voluntary action for the rest of the turn after Turbo-boosting.\n\nMay move up to 2D6" in the Assault phase, even if they don\'t charge and even if they arrived by Deep Strike that turn. They treate difficult terrain the same wasy as during the movement phase.(Source: 40k Rulebook, p.45)'
 p574
-sS'Chapter Tactics (Ultramarines)'
+sS'Specialist Weapon'
 p575
-S" (Unverified in 7th)Combat Doctrines: This detachment can utilise each of the\nfollowing Combat Doctrines once per game. To do so, at the\nstart of your turn, state which doctrine you wish to use (if\nany)- that doctrine is in effect until the beginning of your\nnext turn. You can only use one Combat Doctrine per turn.\n\\begin{description}\n\\item[Tactical Doctrine] Models in this detachment re-roll\nall To Hit ro lls of 1 made in the Shooting phase.\nModels in the detachment's Tactical Squads instead\nre-ro ll all failed To Hit rolls made in the Shooting phase.\n\\item[Assault Doctrine] Units in this detachment can re-roll\ntheir charge range. Models in the detachment's\nAssault Squads, Bike Squads and Attack Bike Squads\ninstead have the Fleet special rule.\n\\item[Devastator Doctrine] Models in this detachment may\nre-roll To Hit with Snap Shot~ (including Overwatch\nshots) . In addition, models in the detachment's\nDevastator Squads have the Relentl ess special rule unless they\ndisembark from a Transport in their Movement phase.\n\\end{description}\n"
+S' (Unverified in 7th)A model fighting with this weapon does not receive the +1 attack for fighting with two weapons unless both weapons have the Specialist Weapon rule (brb p42) '
 p576
-sVGrand Master of the Deathwing
+sS'Chapter Tactics (Ultramarines)'
 p577
-S' (Unverified in 7th)In a primary Detachment that contains Belial, Deathwing Terminator Squads are troops choices instead of elites.(Source: Codex: Dark Angels 6th, p.92)'
+S" (Unverified in 7th)Combat Doctrines: This detachment can utilise each of the\nfollowing Combat Doctrines once per game. To do so, at the\nstart of your turn, state which doctrine you wish to use (if\nany)- that doctrine is in effect until the beginning of your\nnext turn. You can only use one Combat Doctrine per turn.\n\\begin{description}\n\\item[Tactical Doctrine] Models in this detachment re-roll\nall To Hit ro lls of 1 made in the Shooting phase.\nModels in the detachment's Tactical Squads instead\nre-ro ll all failed To Hit rolls made in the Shooting phase.\n\\item[Assault Doctrine] Units in this detachment can re-roll\ntheir charge range. Models in the detachment's\nAssault Squads, Bike Squads and Attack Bike Squads\ninstead have the Fleet special rule.\n\\item[Devastator Doctrine] Models in this detachment may\nre-roll To Hit with Snap Shot~ (including Overwatch\nshots) . In addition, models in the detachment's\nDevastator Squads have the Relentl ess special rule unless they\ndisembark from a Transport in their Movement phase.\n\\end{description}\n"
 p578
-sVGrabbin' Klaw
+sVGrand Master of the Deathwing
 p579
-S' (Unverified in 7th)Codex: Orks (pg 92)(Source: ??)'
+S' (Unverified in 7th)In a primary Detachment that contains Belial, Deathwing Terminator Squads are troops choices instead of elites.(Source: Codex: Dark Angels 6th, p.92)'
 p580
-sVDisarming Strike
+sVGrabbin' Klaw
 p581
-S" (Unverified in 7th)In any round of a challenge, this model can attempt to termporarily disarm his opponent. If he wishes to do so, both he and his opponent roll a D6 before either makes any To Hit rolls. The model with this power adds 1 to the total if his Weapon Skill is higher than his opponent's.\n\nIf the model's total is equal to or higher than his opponent's, nominate one of the opponent's melee weapons - this is treated as a close combat weapon until the end of the phase. If his opponent has no weapons, this ability has no effect.(Source: ??)"
-p582
-sVDa Vulcha's Klaws
-p583
-S" (Unverified in 7th)On any turn that Zagstruk charges, he counts as having a power klaw that strikes in normal Initiative order (remember that with Zagstruk's Furious Charge this will be resolved at Initiative 4).(Source: ??)"
-p584
-sVLord of the Plauge Host
-p585
-S' (Unverified in 7th)In a primary detachment that includes Typhus, Plague Marines are troops choices instead of elites.(Source: ??)'
-p586
-sVFlail
-p587
-S' (Unverified in 7th)lf one or more enemy models are in base contact with a model with a Flail weapon at the beginning of the Fight sub-phase, roll a D3 and subtract the result from the Weapon Skill of those models (to a minimum of 1) for the duration of that phase.(Source: ??)'
-p588
-sS'Rapid Fire'
-p589
-S' (Unverified in 7th)Can fire as normal after moving (1shot at full range, 2 at half or less), but cannot assault.'
-p590
-sVMastery Level 2
-p591
-S' (Unverified in 7th)Generate 2 Warp Charges per turn, choose 2 powers from: Divination, Pyromancy, Telepathy and/or Telekinesis(Source: ??)'
-p592
-sVMastery Level 1
-p593
-S' (Unverified in 7th)Generate 1 Warp Charge per turn, choose 1 power from: Divination, Pyromancy, Telepathy or Telekinesis(Source: ??)'
-p594
-sVMaster of Deception (Warlord Trait)
-p595
-S' (Unverified in 7th)Nominate up to D3 Infantry units in your army before deployment. Those units gain the Infiltrate special rule.(Source: ??)'
-p596
-sVHatred
-p597
-S' (Unverified in 7th)Commonly, a model only has Hatred towards a specific type of foe, in which case, the unlucky target will be expressed, in brackets, after the special rule. This can refer to a whole army, or a specific unit from that army. For example, Hatred (Orks) would mean any model from Codex: Orks, whilst Hatred (Big Meks) would mean only Big Meks. A model striking a hated foe in close combat re-rolls all misses during the first round of each combat - he does not make re-rolls for Hatred in subsequent rounds.(Source: 40k Rulebook, p.37)'
-p598
-sVBoarding Plank
-p599
 S' (Unverified in 7th)Codex: Orks (pg 92)(Source: ??)'
+p582
+sVDisarming Strike
+p583
+S" (Unverified in 7th)In any round of a challenge, this model can attempt to termporarily disarm his opponent. If he wishes to do so, both he and his opponent roll a D6 before either makes any To Hit rolls. The model with this power adds 1 to the total if his Weapon Skill is higher than his opponent's.\n\nIf the model's total is equal to or higher than his opponent's, nominate one of the opponent's melee weapons - this is treated as a close combat weapon until the end of the phase. If his opponent has no weapons, this ability has no effect.(Source: ??)"
+p584
+sVDa Vulcha's Klaws
+p585
+S" (Unverified in 7th)On any turn that Zagstruk charges, he counts as having a power klaw that strikes in normal Initiative order (remember that with Zagstruk's Furious Charge this will be resolved at Initiative 4).(Source: ??)"
+p586
+sVLord of the Plauge Host
+p587
+S' (Unverified in 7th)In a primary detachment that includes Typhus, Plague Marines are troops choices instead of elites.(Source: ??)'
+p588
+sVFlail
+p589
+S' (Unverified in 7th)lf one or more enemy models are in base contact with a model with a Flail weapon at the beginning of the Fight sub-phase, roll a D3 and subtract the result from the Weapon Skill of those models (to a minimum of 1) for the duration of that phase.(Source: ??)'
+p590
+sS'Rapid Fire'
+p591
+S' (Unverified in 7th)Can fire as normal after moving (1shot at full range, 2 at half or less), but cannot assault.'
+p592
+sVMastery Level 2
+p593
+S' (Unverified in 7th)Generate 2 Warp Charges per turn, choose 2 powers from: Divination, Pyromancy, Telepathy and/or Telekinesis(Source: ??)'
+p594
+sVMastery Level 1
+p595
+S' (Unverified in 7th)Generate 1 Warp Charge per turn, choose 1 power from: Divination, Pyromancy, Telepathy or Telekinesis(Source: ??)'
+p596
+sVMaster of Deception (Warlord Trait)
+p597
+S' (Unverified in 7th)Nominate up to D3 Infantry units in your army before deployment. Those units gain the Infiltrate special rule.(Source: ??)'
+p598
+sVHatred
+p599
+S' (Unverified in 7th)Commonly, a model only has Hatred towards a specific type of foe, in which case, the unlucky target will be expressed, in brackets, after the special rule. This can refer to a whole army, or a specific unit from that army. For example, Hatred (Orks) would mean any model from Codex: Orks, whilst Hatred (Big Meks) would mean only Big Meks. A model striking a hated foe in close combat re-rolls all misses during the first round of each combat - he does not make re-rolls for Hatred in subsequent rounds.(Source: 40k Rulebook, p.37)'
 p600
-sVStasis Anomaly
+sVBoarding Plank
 p601
-S' (Unverified in 7th)Every model in a unit hit by one or more weapons with this special rule suffers a -1 penalty to their  Weapon Skill and Initiative, to a minimum of 1, until the end of the turn.(Source: ??)'
+S' (Unverified in 7th)Codex: Orks (pg 92)(Source: ??)'
 p602
-sVWarlord Trait: The Hunt
+sVStasis Anomaly
 p603
-S' (Unverified in 7th)+1 Victory point if your Warlord or his unit kill enemy Warlord in the Assault phase.(Source: Codex: Dark Angels 6th, p.56)'
+S' (Unverified in 7th)Every model in a unit hit by one or more weapons with this special rule suffers a -1 penalty to their  Weapon Skill and Initiative, to a minimum of 1, until the end of the turn.(Source: ??)'
 p604
-sVGhosthelm
+sVWarlord Trait: The Hunt
 p605
-S' (Unverified in 7th)If a model with a ghosthelm suffers an unsaved Wound from Perils of the Warp, he can prevent it by immediately expending a Warp Charge point (if he has one).(Source: Codex Eldar, p.66)'
+S' (Unverified in 7th)+1 Victory point if your Warlord or his unit kill enemy Warlord in the Assault phase.(Source: Codex: Dark Angels 6th, p.56)'
 p606
-sVFlip Belt
+sVGhosthelm
 p607
-S' (Unverified in 7th)They ignore difficult terrain.(Source: ??)'
+S' (Unverified in 7th)If a model with a ghosthelm suffers an unsaved Wound from Perils of the Warp, he can prevent it by immediately expending a Warp Charge point (if he has one).(Source: Codex Eldar, p.66)'
 p608
-sVGhostwalk matrix
+sVFlip Belt
 p609
-S' (Unverified in 7th)A vehicle with this upgrade has the Move Through Cover special rule.(Source: ??)'
+S' (Unverified in 7th)They ignore difficult terrain.(Source: ??)'
 p610
-sVFear
+sVGhostwalk matrix
 p611
-S' (Unverified in 7th)At the start of each Fight sub-phase, a unit in base contact with one or more enemy models that cause Fear must take a Leadership test (called a Fear test) before any blows are struck.\n\nIf the test is passed, all is well and there is no effect. If the test is failed, the unit succumbs to fear - all models in the unit have their Weapon Skill reduced to 1 for the remainder of that Fight sub-phase.\n\nNote that some units are less prone to Fear than others. Units that contain one or more models with the And They Shall Know No Fear or Fearless special rules automatically pass Fear tests. However, a model that causes Fear is not itself immune to Fear. (Source: 40k Rulebook, p.35)'
+S' (Unverified in 7th)A vehicle with this upgrade has the Move Through Cover special rule.(Source: ??)'
 p612
-sVTerrify
+sVFear
 p613
-S' (Unverified in 7th)Terrify is a malediction that targets a single enemy unit within 24". The target receives no benefit from the Fearless special rule and treats all enemy units as havin the Fear special rule for the power\'s duriation. Furthermore, it must immediately take a Morale check.(Source: 40k Rulebook, p.423)'
+S' (Unverified in 7th)At the start of each Fight sub-phase, a unit in base contact with one or more enemy models that cause Fear must take a Leadership test (called a Fear test) before any blows are struck.\n\nIf the test is passed, all is well and there is no effect. If the test is failed, the unit succumbs to fear - all models in the unit have their Weapon Skill reduced to 1 for the remainder of that Fight sub-phase.\n\nNote that some units are less prone to Fear than others. Units that contain one or more models with the And They Shall Know No Fear or Fearless special rules automatically pass Fear tests. However, a model that causes Fear is not itself immune to Fear. (Source: 40k Rulebook, p.35)'
 p614
-sVAcrobatic
+sVTerrify
 p615
-S' (Unverified in 7th)Units entirely composed of models with this special rule Run an additional 3" (this will normally be D6+3").(Source: Codex Eldar, p.32)'
+S' (Unverified in 7th)Terrify is a malediction that targets a single enemy unit within 24". The target receives no benefit from the Fearless special rule and treats all enemy units as havin the Fear special rule for the power\'s duriation. Furthermore, it must immediately take a Morale check.(Source: 40k Rulebook, p.423)'
 p616
-sVGrot Gunner (Big Shoota)
+sVAcrobatic
 p617
-S' (Unverified in 7th)BS 3 (Source: ??)'
+S' (Unverified in 7th)Units entirely composed of models with this special rule Run an additional 3" (this will normally be D6+3").(Source: Codex Eldar, p.32)'
 p618
-sVGrot Riggers
+sVGrot Gunner (Big Shoota)
 p619
-S' (Unverified in 7th) When an Ork vehicle takes a hit, Grots will swarm out of its recesses and repair the damage. An Immobilised Ork vehicle with Grot riggers may roll a dice during the ork shooting phase - on a 4+ the Immobilised result is negated. The vehicle is able to start moving next turn.'
+S' (Unverified in 7th)BS 3 (Source: ??)'
 p620
-sVHaywire
+sVGrot Riggers
 p621
-S' (Unverified in 7th)When a weapon with this special rule hits a vehicle, roll a D6 to determine the effect rather than rolling Armour Penetration normally.\n\nD6\tResult\n1\tNo effect\n2-5\tGlancing hit\n6\tPenetrating hit(Source: 40k Rulebook, p.37)'
+S' (Unverified in 7th) When an Ork vehicle takes a hit, Grots will swarm out of its recesses and repair the damage. An Immobilised Ork vehicle with Grot riggers may roll a dice during the ork shooting phase - on a 4+ the Immobilised result is negated. The vehicle is able to start moving next turn.'
 p622
-sVBike of the Aporkalypse
+sVHaywire
 p623
-S' (Unverified in 7th)Codex: Orks (pg 60)(Source: ??)'
+S' (Unverified in 7th)When a weapon with this special rule hits a vehicle, roll a D6 to determine the effect rather than rolling Armour Penetration normally.\n\nD6\tResult\n1\tNo effect\n2-5\tGlancing hit\n6\tPenetrating hit(Source: 40k Rulebook, p.37)'
 p624
-sVLaser Lock
+sVBike of the Aporkalypse
 p625
-S' Roll to hit with this weapon first, if it hits at least once, treat ll other weapons as Twin-Linked(Source: ??)'
+S' (Unverified in 7th)Codex: Orks (pg 60)(Source: ??)'
 p626
-sVBattle Focus
+sVLaser Lock
 p627
-S' A unit that contains only models with the Battle Focus special rule can either shoot and the Run, or Run and then shoot, in the same Shooting phase. The unit must complete both actions before you move onto the next unit - otherwise the chance to make the second action is forfeit.\n\nA model cannot Run if it fired a Heavy weapon during the same Shooting phase unless it has the Relentless special rule. Similarly, a model that has Run cannot then fire a Heavy weapon in the same Shooting phase unless it has the Relentless special rule. Models that cannot Run gain no benefit from the Battle Focus special rule. (Source: Codex Eldar, p.25)'
+S' Roll to hit with this weapon first, if it hits at least once, treat ll other weapons as Twin-Linked(Source: ??)'
 p628
-sVWarpflame Strike
+sVBattle Focus
 p629
-S' (Unverified in 7th)Immediately after a unit of Warp Talons has arrived from reserve by Deep Strike, all enemy units within 6" count as having been hit by a weapon with the Blind special rule.(Source: ??)'
+S' A unit that contains only models with the Battle Focus special rule can either shoot and the Run, or Run and then shoot, in the same Shooting phase. The unit must complete both actions before you move onto the next unit - otherwise the chance to make the second action is forfeit.\n\nA model cannot Run if it fired a Heavy weapon during the same Shooting phase unless it has the Relentless special rule. Similarly, a model that has Run cannot then fire a Heavy weapon in the same Shooting phase unless it has the Relentless special rule. Models that cannot Run gain no benefit from the Battle Focus special rule. (Source: Codex Eldar, p.25)'
 p630
-sV'Eavy Armour
+sVWarpflame Strike
 p631
-S' (Unverified in 7th)It confers a 4+ armour save.(Source: ??)'
+S' (Unverified in 7th)Immediately after a unit of Warp Talons has arrived from reserve by Deep Strike, all enemy units within 6" count as having been hit by a weapon with the Blind special rule.(Source: ??)'
 p632
-sVThe Black Staff of Ahriman
+sV'Eavy Armour
 p633
-S" (Unverified in 7th)Allows Ahriman to manifest up to three witchfire powers in the same Shooting phase, prol'ided he has enough Warp Charge poims.(Source: ??)"
+S' (Unverified in 7th)It confers a 4+ armour save.(Source: ??)'
 p634
-sVExarch Power: Fear
+sVThe Black Staff of Ahriman
 p635
-S' (Unverified in 7th)Gives the Fear USR(Source: ??)'
+S" (Unverified in 7th)Allows Ahriman to manifest up to three witchfire powers in the same Shooting phase, prol'ided he has enough Warp Charge poims.(Source: ??)"
 p636
-sVExarch Power: Battle Fortune
+sVExarch Power: Fear
 p637
-S' (Unverified in 7th)this model has a 4++(Source: ??)'
+S' (Unverified in 7th)Gives the Fear USR(Source: ??)'
 p638
-sVSoul Blaze
+sVExarch Power: Battle Fortune
 p639
-S" (Unverified in 7th)If a unit suffers one or more unsaved Wounds from an attack with this special rule, it is set ablaze and continues to burn - mark it with a coin or counter as a reminder.\n\nAt the end of each turn, roll a D6 for each unit with a Soul Blaze counter on it. On a 3 or less, the flames die out and the unit is no longer ablaze - remove your reminder counter. On a 4+, the unit takes D3 Strength 4 AP 5 hits. These WOunds are allocated by the unit's controlling player and cover saves cannot be taken. A unit cannot have more than one set ablaze counter on it at a time.(Source: 40k Rulebook, p.42)"
+S' (Unverified in 7th)this model has a 4++(Source: ??)'
 p640
-sVWarlord Trait: Fate's Messenger
+sVSoul Blaze
 p641
-S' (Unverified in 7th)The Warlord re-rolls all saving throw results of 1.(Source: Codex Eldar, p.25)'
+S" (Unverified in 7th)If a unit suffers one or more unsaved Wounds from an attack with this special rule, it is set ablaze and continues to burn - mark it with a coin or counter as a reminder.\n\nAt the end of each turn, roll a D6 for each unit with a Soul Blaze counter on it. On a 3 or less, the flames die out and the unit is no longer ablaze - remove your reminder counter. On a 4+, the unit takes D3 Strength 4 AP 5 hits. These WOunds are allocated by the unit's controlling player and cover saves cannot be taken. A unit cannot have more than one set ablaze counter on it at a time.(Source: 40k Rulebook, p.42)"
 p642
-sVIt Will Not Die
+sVWarlord Trait: Fate's Messenger
 p643
-S" (Unverified in 7th)At the end of each friendly turn, roll a D6 for each model with this special rule that has less than it's starting number of wounds or hull points, but has not been removed as a casualty or destroyed. On a roll of 5+, that model regains a Wound or Hull Point, lost earlier in the battle.(Source: ??)"
+S' (Unverified in 7th)The Warlord re-rolls all saving throw results of 1.(Source: Codex Eldar, p.25)'
 p644
-sVIcon of Flame
+sVIt Will Not Die
 p645
-S' (Unverified in 7th)Units with the Mark of Tzeentch only. All boltguns, combi- bolters, heavy bolters and bolt pistols carried by models with the Mark of Tzeentch in a unit equipped with an icon of flame have the Soul Blaze special rule.(Source: ??)'
+S" (Unverified in 7th)At the end of each friendly turn, roll a D6 for each model with this special rule that has less than it's starting number of wounds or hull points, but has not been removed as a casualty or destroyed. On a roll of 5+, that model regains a Wound or Hull Point, lost earlier in the battle.(Source: ??)"
 p646
-sS'Twin-Linked'
+sVIcon of Flame
 p647
-S' Re-roll misses'
+S' (Unverified in 7th)Units with the Mark of Tzeentch only. All boltguns, combi- bolters, heavy bolters and bolt pistols carried by models with the Mark of Tzeentch in a unit equipped with an icon of flame have the Soul Blaze special rule.(Source: ??)'
 p648
-sVSkyfire
+sS'Twin-Linked'
 p649
-S' (Unverified in 7th)A model with this special rule, or that is firing a weapon with this specia rule, fires using its normal Ballistic Skill when shooting at Flyers, Flying Monstrous Creatures and Skimmers. Unless it also has the Interceptor special rule, it can only fire snap shots against other targets. (Source: 40k Rulebook, p.42)'
+S' Re-roll misses'
 p650
-sVMarksman's Eye
+sVSkyfire
 p651
-S' (Unverified in 7th)This model makes Precision Shots on a 5+, rather than a 6.(Source: ??)'
+S' (Unverified in 7th)A model with this special rule, or that is firing a weapon with this specia rule, fires using its normal Ballistic Skill when shooting at Flyers, Flying Monstrous Creatures and Skimmers. Unless it also has the Interceptor special rule, it can only fire snap shots against other targets. (Source: 40k Rulebook, p.42)'
 p652
-sVIchor Blood
+sVMarksman's Eye
 p653
-S' (Unverified in 7th)Any unit that causes one or more unsaved wounds on a model with ichor blood during the Fight sub-phase immediately takes a S3 AP4 hit per Wound caused.(Source: ??)'
+S' (Unverified in 7th)This model makes Precision Shots on a 5+, rather than a 6.(Source: ??)'
 p654
-sVUnrelenting Hunter
+sVIchor Blood
 p655
-S' (Unverified in 7th)When shooting at enemy vehicles, a Nephilim Jetfighter can choose to treat any Weapon Destroyed results as Immobilised results.(Source: Codex: Dark Angels, p.50)'
+S' (Unverified in 7th)Any unit that causes one or more unsaved wounds on a model with ichor blood during the Fight sub-phase immediately takes a S3 AP4 hit per Wound caused.(Source: ??)'
 p656
-sVJump Pack
+sVUnrelenting Hunter
 p657
-S' (Unverified in 7th)Models equipped with jump packs have the jump unit type, as described in the warhammer 40,000 rulebook.(Source: ??)'
+S' (Unverified in 7th)When shooting at enemy vehicles, a Nephilim Jetfighter can choose to treat any Weapon Destroyed results as Immobilised results.(Source: Codex: Dark Angels, p.50)'
 p658
-sVAssault Vehicle
+sVJump Pack
 p659
-S' (Unverified in 7th)Passengers may assault the same turn they disembark(Source: ??)'
+S' (Unverified in 7th)Models equipped with jump packs have the jump unit type, as described in the warhammer 40,000 rulebook.(Source: ??)'
 p660
-sVProphet of the Waaagh!
+sVAssault Vehicle
 p661
-S" (Unverified in 7th)Ghazghkull's war cry can unleash a Waaagh! of devastating proportions. Ghazghkull's Waaagh! can be summoned at any time, but only once per game, and not on the first turn. It replaces the army's usual Waaagh! - this one is better.\n\n    Ghazghkull's Waaagh! lasts the remainder of that player turn and all the following player turn. During this period Ghazghkull's saving throw is invulnerable.\n    \nFurthermore, for the duration of the Waaagh ! all Ork infantry units automatically count as rolling a 6 for the Waaagh! movement they wish to make. All non-fleeing friendly units become Fearless for the duration of the Waaagh!.\n\nNote that no more than one Waaagh! can be called per turn, so Ghazghkull cannot combine his Waaagh! with the Waaagh! generated by a Weirdboy."
+S' (Unverified in 7th)Passengers may assault the same turn they disembark(Source: ??)'
 p662
-sVStalker
+sVProphet of the Waaagh!
 p663
-S" (Unverified in 7th)In the first round of a challenge, the model can attempt to backstab his opponent - you must declare he is doing so immediately after a challenge has been accepted. If the attempt is made, both he and his opponent roll a D6 before either makes any To Hit rolls. The model with this power adds 1 to the total if his Initiative is higher than his opponent's. \n\nIf the model's total is equal to or higher than the opponent's, he re-rolls failed To Wound rolls this phase.(Source: ??)"
+S" (Unverified in 7th)Ghazghkull's war cry can unleash a Waaagh! of devastating proportions. Ghazghkull's Waaagh! can be summoned at any time, but only once per game, and not on the first turn. It replaces the army's usual Waaagh! - this one is better.\n\n    Ghazghkull's Waaagh! lasts the remainder of that player turn and all the following player turn. During this period Ghazghkull's saving throw is invulnerable.\n    \nFurthermore, for the duration of the Waaagh ! all Ork infantry units automatically count as rolling a 6 for the Waaagh! movement they wish to make. All non-fleeing friendly units become Fearless for the duration of the Waaagh!.\n\nNote that no more than one Waaagh! can be called per turn, so Ghazghkull cannot combine his Waaagh! with the Waaagh! generated by a Weirdboy."
 p664
-sVKombi-weapon
+sVStalker
 p665
-S' (Unverified in 7th)The shoota part of the kombi-weapon can be fired normally, but the other half of the weapon may only be used once per battle. They may not be fired at the same time.(Source: ??)'
+S" (Unverified in 7th)In the first round of a challenge, the model can attempt to backstab his opponent - you must declare he is doing so immediately after a challenge has been accepted. If the attempt is made, both he and his opponent roll a D6 before either makes any To Hit rolls. The model with this power adds 1 to the total if his Initiative is higher than his opponent's. \n\nIf the model's total is equal to or higher than the opponent's, he re-rolls failed To Wound rolls this phase.(Source: ??)"
 p666
-sVExarch Power: Iron Resolve
+sVKombi-weapon
 p667
-S' (Unverified in 7th)This model has +1LD(Source: ??)'
+S' (Unverified in 7th)The shoota part of the kombi-weapon can be fired normally, but the other half of the weapon may only be used once per battle. They may not be fired at the same time.(Source: ??)'
 p668
-sVPreferred Enemy (Chaos Space Marines)
+sVExarch Power: Iron Resolve
 p669
-S' (Unverified in 7th)Reroll all failed to hit and to wound rolls of 1 against the chosen enemy in both shooting and assault.(Source: BRB, p.40)'
+S' (Unverified in 7th)This model has +1LD(Source: ??)'
 p670
-sVGrot Orderly
+sVPreferred Enemy (Chaos Space Marines)
 p671
-S" (Unverified in 7th)A Grot Orderly allows the Painboy's unit to re-roll a single Feel No Pain roll. Remove the Orderly model once he has been used. Orderly models are purely decorative and are always ignored for game purposes, just move them to one side if they become a problem.(Source: ??)"
+S' (Unverified in 7th)Reroll all failed to hit and to wound rolls of 1 against the chosen enemy in both shooting and assault.(Source: BRB, p.40)'
 p672
-sVForceshield
+sVGrot Orderly
 p673
-S' (Unverified in 7th)A model with a forceshield has a 4+ invulnerable save.(Source: ??)'
+S" (Unverified in 7th)A Grot Orderly allows the Painboy's unit to re-roll a single Feel No Pain roll. Remove the Orderly model once he has been used. Orderly models are purely decorative and are always ignored for game purposes, just move them to one side if they become a problem.(Source: ??)"
 p674
-sVMonster Hunter
+sVForceshield
 p675
-S' (Unverified in 7th)A unit that contains at least one model with this special rule re-rolls all failed To Wound rolls against Monstrous Creatures and Flying Monstrous Creatures. (Source: 40k Rulebook, p.39)'
+S' (Unverified in 7th)A model with a forceshield has a 4+ invulnerable save.(Source: ??)'
 p676
-sVSkyburst
+sVMonster Hunter
 p677
-S' (Unverified in 7th)This shooting attack does not need line of sight. If the unit consists of at least six models with a grenade pack, the attack has the Large Blast special rule - otherwise it has the Blast special rule.(Source: Codex Eldar, p.66)'
+S' (Unverified in 7th)A unit that contains at least one model with this special rule re-rolls all failed To Wound rolls against Monstrous Creatures and Flying Monstrous Creatures. (Source: 40k Rulebook, p.39)'
 p678
-sVFeel No Pain
+sVSkyburst
 p679
-S' (Unverified in 7th)When a model with this special rule suffers an unsaved Wound, it can make a special Feel No Pain roll to avoid being wounded (this is not a saving throw). Roll a D6 each time an unsaved Wound is suffered. On a 4 or less, you must take the Wound as normal. On a 5+, the unsaved Wound is discounted - treat it as having been saved.\n\nNot that Feel No Pain rolls cannot be made against unsaved Wounds that inflict Instant Death. \n\nIf a unit has the Feel No Pain special rule with a number in brackets aftwerwards - Feel No Pain (6+), for example - then the number in brackets is the D6 result needed to discount the Wound.\n\nIf one or more models in a unit have the Feel No Pain special rule then the Mixed Saves method of Wound allocation should always be used for allocating Wounds and removing casualties from that unit; Feel No Pain rolls should be individually made after each failed save.\n\nFAQ: Feel No Pain can be used to resist a Wound suffered from Perils of the Warp. Eternal Warrior does not allow Feel No Pain to be rolled against Wounds that inflict Instant Death. Force Weapon activation is made before determining whether or not a victim is permitted a Feel No Pain roll. (Source: ??)'
+S' (Unverified in 7th)This shooting attack does not need line of sight. If the unit consists of at least six models with a grenade pack, the attack has the Large Blast special rule - otherwise it has the Blast special rule.(Source: Codex Eldar, p.66)'
 p680
-sVTactical Precision
+sVFeel No Pain
 p681
-S' (Unverified in 7th)Belial and any unit he has joined with Inner Circle rule do not scatter when Deep Striking.(Source: Codex: Dark Angels 6th, p.56)'
+S' (Unverified in 7th)When a model with this special rule suffers an unsaved Wound, it can make a special Feel No Pain roll to avoid being wounded (this is not a saving throw). Roll a D6 each time an unsaved Wound is suffered. On a 4 or less, you must take the Wound as normal. On a 5+, the unsaved Wound is discounted - treat it as having been saved.\n\nNot that Feel No Pain rolls cannot be made against unsaved Wounds that inflict Instant Death. \n\nIf a unit has the Feel No Pain special rule with a number in brackets aftwerwards - Feel No Pain (6+), for example - then the number in brackets is the D6 result needed to discount the Wound.\n\nIf one or more models in a unit have the Feel No Pain special rule then the Mixed Saves method of Wound allocation should always be used for allocating Wounds and removing casualties from that unit; Feel No Pain rolls should be individually made after each failed save.\n\nFAQ: Feel No Pain can be used to resist a Wound suffered from Perils of the Warp. Eternal Warrior does not allow Feel No Pain to be rolled against Wounds that inflict Instant Death. Force Weapon activation is made before determining whether or not a victim is permitted a Feel No Pain roll. (Source: ??)'
 p682
-sVAura of Dark Glory
+sVTactical Precision
 p683
-S' (Unverified in 7th)A model with an aura of dark glory has a 5+ invulnerable save.(Source: ??)'
+S' (Unverified in 7th)Belial and any unit he has joined with Inner Circle rule do not scatter when Deep Striking.(Source: Codex: Dark Angels 6th, p.56)'
 p684
-sS'Blast'
+sVAura of Dark Glory
 p685
-S' (Unverified in 7th)Against vehicles, see BRB pp. 73.  Against other units, pp 33'
+S' (Unverified in 7th)A model with an aura of dark glory has a 5+ invulnerable save.(Source: ??)'
 p686
-sVMask of Jain Zar
+sS'Blast'
 p687
-S' (Unverified in 7th)When Jain Zar charges into combat, all enemy models in the combat suffer a -5 modifier to both Weapon Skill and Initiative (to a minimum of 1) until the end of the Assault phase. The initiative penalty is not cumulative with that from a Banshee mask.(Source: Codex Eldar, p.57)'
+S' (Unverified in 7th)Against vehicles, see BRB pp. 73.  Against other units, pp 33'
 p688
-sS'Porta-Rack'
+sVMask of Jain Zar
 p689
-S' (Unverified in 7th)f the bearer kills an enemy character in close combat he gains Preferred Enemy (current enemy) and Fear. In addition any enemy Teleport Homers and Locator Beacons can be used as if they were your own.'
+S' (Unverified in 7th)When Jain Zar charges into combat, all enemy models in the combat suffer a -5 modifier to both Weapon Skill and Initiative (to a minimum of 1) until the end of the Assault phase. The initiative penalty is not cumulative with that from a Banshee mask.(Source: Codex Eldar, p.57)'
 p690
-sVMutilator Weapons
+sS'Porta-Rack'
 p691
-S' (Unverified in 7th)If a Mutilator unit is locked in combat at the start of a Fight sub-phase, they must choose one of the weapons options from the following list:\n\n  A pair of chainfists\n  A pair of power mauls\n  A pair of lightning claws\n  A pair of power swords\n  A pair of power axes\n\nEvery Mutilator in a unit must choose the same weapons option. A Mutilator unit cannot choose the same weapons option in two consecutive Fight sub-phases.(Source: ??)'
+S' (Unverified in 7th)f the bearer kills an enemy character in close combat he gains Preferred Enemy (current enemy) and Fear. In addition any enemy Teleport Homers and Locator Beacons can be used as if they were your own.'
 p692
-sS'Power-Field Generator'
+sVMutilator Weapons
 p693
-S' (Unverified in 7th)All models within 3" have 4++'
+S' (Unverified in 7th)If a Mutilator unit is locked in combat at the start of a Fight sub-phase, they must choose one of the weapons options from the following list:\n\n  A pair of chainfists\n  A pair of power mauls\n  A pair of lightning claws\n  A pair of power swords\n  A pair of power axes\n\nEvery Mutilator in a unit must choose the same weapons option. A Mutilator unit cannot choose the same weapons option in two consecutive Fight sub-phases.(Source: ??)'
 p694
-sS'Monstrous Creature'
+sS'Power-Field Generator'
 p695
-S' (Unverified in 7th)SHOOTING: Monstrous Creatures can fire up to two of their weapons each Shooting phase - they must, of course, fire both of them at the same target. SPECIAL RULES: Monstrous Creatures have the fear, Hammer of Wrath, Move Through Cover, Relentless and Smash special rules.'
+S' (Unverified in 7th)All models within 3" have 4++'
 p696
-sVThe Eye of Wrath
+sS'Monstrous Creature'
 p697
-S' (Unverified in 7th)One use only. In the FIght sub-phase, provided he is not in a challenge, Wriel can make a special attack at his Initiative step instead of making any close combat attacks. Centre a large blast marker over Yriel; all units (friend or foe) suffer a number of Strength 6 AP3 hits equal to the number of models from their unit at least partially under the template (excluding Yriel). Only unsaved Wounds caused to enemy units count towards combat resolution.(Source: Codex Eldar, p.54)'
+S' (Unverified in 7th)SHOOTING: Monstrous Creatures can fire up to two of their weapons each Shooting phase - they must, of course, fire both of them at the same target. SPECIAL RULES: Monstrous Creatures have the fear, Hammer of Wrath, Move Through Cover, Relentless and Smash special rules.'
 p698
-sVIndependant Character
+sVThe Eye of Wrath
 p699
-S' (Unverified in 7th)Independent Characters can join and leave other non-vehicle non-\'loner\' units. Although Independent Characters may join with other Independent Characters to form a powerful multi-character unit.\nAn Independent Character counts as having joined a unit if he ends his move within 2" of them, if he is within 2" of more than one unit you must declare which unit he is joining.\nAn Independent Character may leave his unit and join another one in the same movement phase, but he may not join a unit in any other phase.\nAn Independent Character cannot join or leave a unit that is locked in combat or falling back, he also may not leave a unit that has gone to ground.\n\nLook out Sir is taken on a 2+\n\nIf a unit with an Independent Character in it has fallen to below 25% they test as if they had 25% remaning\n\nWhen an Independent Character joins a unit he looses all special rules that the unit does not have unless the rule says it applys to the unit (eg Stubborn) and vice versa\n\nIf the unit is suffering from ongoing effects (eg blind, soul blaze) and the Independent Character leaves the unit, he is still suffering from those effects as well, but they to not transfer to a new unit he joins.(Source: BRB, p.0)'
+S' (Unverified in 7th)One use only. In the FIght sub-phase, provided he is not in a challenge, Wriel can make a special attack at his Initiative step instead of making any close combat attacks. Centre a large blast marker over Yriel; all units (friend or foe) suffer a number of Strength 6 AP3 hits equal to the number of models from their unit at least partially under the template (excluding Yriel). Only unsaved Wounds caused to enemy units count towards combat resolution.(Source: Codex Eldar, p.54)'
 p700
-sVStikkbombs
+sVIndependant Character
 p701
-S' (Unverified in 7th)Count as frag grenades, see the Warhammer 40K rulebook.(Source: ??)'
+S' (Unverified in 7th)Independent Characters can join and leave other non-vehicle non-\'loner\' units. Although Independent Characters may join with other Independent Characters to form a powerful multi-character unit.\nAn Independent Character counts as having joined a unit if he ends his move within 2" of them, if he is within 2" of more than one unit you must declare which unit he is joining.\nAn Independent Character may leave his unit and join another one in the same movement phase, but he may not join a unit in any other phase.\nAn Independent Character cannot join or leave a unit that is locked in combat or falling back, he also may not leave a unit that has gone to ground.\n\nLook out Sir is taken on a 2+\n\nIf a unit with an Independent Character in it has fallen to below 25% they test as if they had 25% remaning\n\nWhen an Independent Character joins a unit he looses all special rules that the unit does not have unless the rule says it applys to the unit (eg Stubborn) and vice versa\n\nIf the unit is suffering from ongoing effects (eg blind, soul blaze) and the Independent Character leaves the unit, he is still suffering from those effects as well, but they to not transfer to a new unit he joins.(Source: BRB, p.0)'
 p702
-sVArmourbane
+sVStikkbombs
 p703
-S' (Unverified in 7th)If a model has this special rule, or is attacking with a Melee weapon that has this special rule, it rolls 2D6 for armour penetration in close combat. (Source: ??)'
+S' (Unverified in 7th)Count as frag grenades, see the Warhammer 40K rulebook.(Source: ??)'
 p704
-sVDaemon of Tzeentch
+sVArmourbane
 p705
-S' (Unverified in 7th)Hatred (Daemons of Nurgle); re-roll all saving throw results of 1.(Source: ??)'
+S' (Unverified in 7th)If a model has this special rule, or is attacking with a Melee weapon that has this special rule, it rolls 2D6 for armour penetration in close combat. (Source: ??)'
 p706
-sVPsyker - Sorcerer
+sVDaemon of Tzeentch
 p707
-S' (Unverified in 7th)Sorcerers generate their powers from the Biomancy, Pyromancy and Telepathy disciplines.(Source: ??)'
+S' (Unverified in 7th)Hatred (Daemons of Nurgle); re-roll all saving throw results of 1.(Source: ??)'
 p708
-sS'HWP'
+sVPsyker - Sorcerer
 p709
-S" (Unverified in 7th)Platform has it's own toughness and save, shown in brackets. To do: write the rest of this."
+S' (Unverified in 7th)Sorcerers generate their powers from the Biomancy, Pyromancy and Telepathy disciplines.(Source: ??)'
 p710
-sVFirst Amongst Chosen
+sS'HWP'
 p711
-S' (Unverified in 7th)In a pirmary detatchment that includes Abbodon, units of Chosen are troop choices instead of Elite choices.(Source: ??)'
+S" (Unverified in 7th)Platform has it's own toughness and save, shown in brackets. To do: write the rest of this."
 p712
-sVWaagh! Plane
+sVFirst Amongst Chosen
 p713
-S" (Unverified in 7th)When a Waagh! is called, model may shoot it's assault weapons double the number of times.(Source: ??)"
+S' (Unverified in 7th)In a pirmary detatchment that includes Abbodon, units of Chosen are troop choices instead of Elite choices.(Source: ??)'
 p714
-sVDaemon Weapon
+sVWaagh! Plane
 p715
-S' (Unverified in 7th)At the start of each Fight sub-phase during which the bearer of a Daemon Weapon is locked in combat, roll a D6. On a roll of a 1, the model immediately suffers a Wound with no armour saves allowed and his Weapon Skill is 1 until the end of the phase. On a roll of 2+, the bearer gains that many additional Attacks until the end of the phase. If the bearer has multiple Melee weapons, only roll a D6 if he chooses to attack with a Daemon Weapon.(Source: ??)'
+S" (Unverified in 7th)When a Waagh! is called, model may shoot it's assault weapons double the number of times.(Source: ??)"
 p716
-sVMindshock Pod
+sVDaemon Weapon
 p717
-S' (Unverified in 7th)All successful Morale and Pinning tests made within 12" of a Hemlock Wraitfighter must be re-rolled.(Source: Codex Eldar, p.67)'
+S' (Unverified in 7th)At the start of each Fight sub-phase during which the bearer of a Daemon Weapon is locked in combat, roll a D6. On a roll of a 1, the model immediately suffers a Wound with no armour saves allowed and his Weapon Skill is 1 until the end of the phase. On a roll of 2+, the bearer gains that many additional Attacks until the end of the phase. If the bearer has multiple Melee weapons, only roll a D6 if he chooses to attack with a Daemon Weapon.(Source: ??)'
 p718
-sVSwooping Hawk Wings
+sVMindshock Pod
 p719
-S' (Unverified in 7th)A model with Swooping Hawk Wings gains the Jump unit type.(Source: Codex Eldar, p.67)'
+S' (Unverified in 7th)All successful Morale and Pinning tests made within 12" of a Hemlock Wraitfighter must be re-rolled.(Source: Codex Eldar, p.67)'
 p720
-sVMurder
+sVSwooping Hawk Wings
 p721
-S" (Unverified in 7th)Immediately before the start of the first turn you must nominate one enemy character to be the target of the bearer of the Murder Sword (this can even be one in reserve; remember to tell your opponent which character you have nominated). Whilst the bearer is in base contact with the nominated character, the Murder Sword's Strength becomes x2, its AP becomes 1, and it has the Instant Death special rule.(Source: ??)"
+S' (Unverified in 7th)A model with Swooping Hawk Wings gains the Jump unit type.(Source: Codex Eldar, p.67)'
 p722
-sVSlow and Purposeful 
+sVMurder
 p723
-S' (Unverified in 7th)A unit that contains at least one model with this special rule cannot Run, Turbo-boost, move Flat Out, perform Sweeping Advances or fire Overwatch. They can, however, shoot with Heavy, Salvo and Ordnance weapons, counting as stationary, even if they moved in the previous Movement phase. They are also allowed to charge in the same turn they fire Heavy, Ordnance, Rapid Fire or Salvo weapons. (Source: ??)'
+S" (Unverified in 7th)Immediately before the start of the first turn you must nominate one enemy character to be the target of the bearer of the Murder Sword (this can even be one in reserve; remember to tell your opponent which character you have nominated). Whilst the bearer is in base contact with the nominated character, the Murder Sword's Strength becomes x2, its AP becomes 1, and it has the Instant Death special rule.(Source: ??)"
 p724
-sS'Runes of Witessing'
+sVSlow and Purposeful 
 p725
-S' (Unverified in 7th)One use only. If the Farseer fails a Psychic test, he can use these runes to re-roll the test (potentially negating Perls of the Warp in the process)'
+S' (Unverified in 7th)A unit that contains at least one model with this special rule cannot Run, Turbo-boost, move Flat Out, perform Sweeping Advances or fire Overwatch. They can, however, shoot with Heavy, Salvo and Ordnance weapons, counting as stationary, even if they moved in the previous Movement phase. They are also allowed to charge in the same turn they fire Heavy, Ordnance, Rapid Fire or Salvo weapons. (Source: ??)'
 p726
-sVExarch Power: Marksman's Eye
+sS'Runes of Witessing'
 p727
-S' (Unverified in 7th)This model make precision shots on a 5+ rather than on a 6(Source: ??)'
+S' (Unverified in 7th)One use only. If the Farseer fails a Psychic test, he can use these runes to re-roll the test (potentially negating Perls of the Warp in the process)'
 p728
-sS'Mandiblasters'
+sVExarch Power: Marksman's Eye
 p729
-S' (Unverified in 7th)At I10 a model with mandiblasters inflicts a S3 AP- hit on one enemy model in base contact'
+S' (Unverified in 7th)This model make precision shots on a 5+ rather than on a 6(Source: ??)'
 p730
-sS'Poisoned'
+sS'Mandiblasters'
 p731
-S" (Unverified in 7th)Poisoned CC weps must reroll failed To Wound rolls if the wielder has equal to or higher S than the target's T. Additionally, Poisoned guns default to 4+ when unspecified, and have a default S of 1. (Source BRB pp. 40)"
+S' (Unverified in 7th)At I10 a model with mandiblasters inflicts a S3 AP- hit on one enemy model in base contact'
 p732
-sVTwo-handed
+sS'Poisoned'
 p733
-S' (Unverified in 7th)A model attacking with this weapon can never gain bonus Attacks fro fighting with two weapons. (Source: 40k Rulebook, p.43)'
+S" (Unverified in 7th)Poisoned CC weps must reroll failed To Wound rolls if the wielder has equal to or higher S than the target's T. Additionally, Poisoned guns default to 4+ when unspecified, and have a default S of 1. (Source BRB pp. 40)"
 p734
-sVSoulrazor
+sVTwo-handed
 p735
-S' (Unverified in 7th)When a model suffers one or more unsaved Wounds from this weapon, it must pass a separate Leadership test for each Wound suffered or be removed from play. (Source: Codex Eldar, p.64)'
+S' (Unverified in 7th)A model attacking with this weapon can never gain bonus Attacks fro fighting with two weapons. (Source: 40k Rulebook, p.43)'
 p736
-sVBanshee Mask
+sVSoulrazor
 p737
-S' (Unverified in 7th)When one or more models with a banshee mask charge into combat, all enemy models in the combat suffer -5 to their Initiative (to a minimum of 1) until the end of that phase.(Source: Codex Eldar, p.66)'
+S' (Unverified in 7th)When a model suffers one or more unsaved Wounds from this weapon, it must pass a separate Leadership test for each Wound suffered or be removed from play. (Source: Codex Eldar, p.64)'
 p738
-sVViolent Temper
+sVBanshee Mask
 p739
-S' (Unverified in 7th)Should his unit ever fail a Morale check, Zagstruk will execute a member of the unit to restore order. The unit is instead counted as passing the test, but a Stormboy model must be removed as a casualty as a result. If Zagstruk is on his own, the Violent Temper rule does not apply.(Source: ??)'
+S' (Unverified in 7th)When one or more models with a banshee mask charge into combat, all enemy models in the combat suffer -5 to their Initiative (to a minimum of 1) until the end of that phase.(Source: Codex Eldar, p.66)'
 p740
-sVCrushing Blow
+sVViolent Temper
 p741
-S' (Unverified in 7th)This model has a +1 Strength.(Source: ??)'
+S' (Unverified in 7th)Should his unit ever fail a Morale check, Zagstruk will execute a member of the unit to restore order. The unit is instead counted as passing the test, but a Stormboy model must be removed as a casualty as a result. If Zagstruk is on his own, the Violent Temper rule does not apply.(Source: ??)'
 p742
-sVExarch Power: Stalker
+sVCrushing Blow
 p743
-S" (Unverified in 7th)In the first round of a challenge the model may attempt to backstab the opponent, if the attempt is made both players roll a D6 before any attacks are made, if this models I is higher than the opponent add 1 to the roll.\nIf this model's total is equal to or higher than the opponent's he re-rolls all failed to hit rolls this phase(Source: ??)"
+S' (Unverified in 7th)This model has a +1 Strength.(Source: ??)'
 p744
+sVExarch Power: Stalker
+p745
+S" (Unverified in 7th)In the first round of a challenge the model may attempt to backstab the opponent, if the attempt is made both players roll a D6 before any attacks are made, if this models I is higher than the opponent add 1 to the roll.\nIf this model's total is equal to or higher than the opponent's he re-rolls all failed to hit rolls this phase(Source: ??)"
+p746
 s.

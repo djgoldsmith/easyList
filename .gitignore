@@ -33,3 +33,22 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+*~
+*.pdf
+*.aux
+*.log
+/printme_haven/auto/haven_tube.el
+/printme_haven/haven_tube.org
+/printme_haven/haven_tube.tex
+/auto/dstats.el
+/auto/ex.el
+/.ropeproject/config.py
+/.ropeproject/globalnames
+/.ropeproject/history
+/.ropeproject/objectdb
+/.projectile
+/.dir-locals.el
+/dstats (emacsbook's conflicted copy 2014-06-05).org
+/dstats.tex
+/index_flymake.py
+/rules.r.bak

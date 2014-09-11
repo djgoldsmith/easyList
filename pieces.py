@@ -9,7 +9,7 @@ validWeaponTypes=["shooting","melee"]
 toHitStats=["-","6","5","4","3","2","2/6","2/5","2/4","2/3","2/2"]
 
 moveStats={}
-moveStatLines = [("Infantry"          ,6,"max(2d6)","2d6","Run D6","2d6","3D6, discarding highest",""),
+moveStatLines = [("Infantry"          ,6,"max(2d6)","2d6","Run D6","2d6","Subtract 2, initiative 1",""),
                ( "Jump"               ,12,"Starting or ending in difficult terrain requires a dangerous terrain test","3d6","2d6, may re-roll both dice","3D6, discarding highest, can re-roll all dice. Must take Dangerous Terrain test if starting or ending in difficult terrain","Run D6","When not 'jumping', move distance and difficult terrain behaviour are inherited from the base type, but fallback is still 3d6"),
                ( "Beast"              ,12,"No effect","3D6","Run D6","2d6","No effect.",""),
                ( "Cavalry"            ,12,"Count as dangerous","3d6","Run D6","2d6","2D6, take dangerous terrain test",""),
@@ -28,6 +28,13 @@ moveStatLines = [("Infantry"          ,6,"max(2d6)","2d6","Run D6","2d6","3D6, d
                ( "Fast"               ,12,"Dangerous terrain test","N/A","Flat-Out 12","To be done!","To be done!",""),
                ( "Vehicle"            ,12,"Dangerous terrain test","N/A","Flat-Out 6","To be done!","To be done!","")
                ]
+
+vehicleMoves={"Stationary":{"distance":"0\"","shooting":"All weapons, full BS"},
+              "Combat Speed":{"distance":"6\"","shooting":"Single weapon at full BS, others snap-shots"},
+              "Cruising Speed":{"distance":"12\"","shooting":"Snap shots on all weapons"}}
+              
+              
+              
 
 for i in moveStatLines:
 
@@ -65,7 +72,12 @@ class Weapon(object):
             raise TypeError("Weapon type must be one of %s, can't be %s"%(str(validWeaponTypes),self.type))
         self.range=range
         self.name=name
-        self._strength = strength
+        if type(strength)==type(" ") and wielder!=None and strength.upper()=="USER":
+            self._strength=wielder.s
+
+        else:
+            self._strength = strength
+        
         self._ap = ap
 
         self._specialRules=[]
@@ -74,6 +86,10 @@ class Weapon(object):
                 self.addSpecialRule(i)
         self.hitExtras=hitExtras
         self.woundExtras=woundExtras
+    def profileLatex(self):
+        out=self.name +" & "+str(self.range)+" & " +str(self._strength)+" & "+str(self._ap)+" & "+", ".join(self._specialRules)+ "\\\\"
+        return out
+
     def tl(self):
         c=self.clone()
         c.addSpecialRule("Twin-Linked")
@@ -121,7 +137,7 @@ class Weapon(object):
             return object.__getattribute__(self,attr)
 
     def woundProfile(self):
-
+        print self.name, self._strength
         out=""
         doubleLoop=[False]
         if self.wielder!=None and self.wielder.hasRule("Smash"):
@@ -151,7 +167,8 @@ class Weapon(object):
                     out+="\\vspace{1em}\\\\Smash (One attack only)\\\\"
                 out+= """\\begin{{tabular}}{{l|l|l|l|l|l|l|l|l|l|l|}}
             \\begin{{turn}}{{45}}T\\end{{turn}} & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\\\ \\hline
-                \\begin{{turn}}{{45}}Roll\\end{{turn}} & {0}
+                \\begin{{turn}}{{45}}Roll\\end{{turn}} & {0} \\\\
+                & & & & \\parbox{{0.5cm}}{{\\footnotesize Marine, Boy, Nob }} & \\parbox{{0.5cm}}{{\\footnotesize Biker marine, warboss }} & & &   &  &  \\\\
             \\end{{tabular}}""".format(toWound)
                 if self.type=="melee" and self.wielder!=None and self.wielder.hasRule("Furious Charge"):
                     toWound=[str(shootToWoundIndividual(10,n+1)) for n in range(10)]
@@ -251,6 +268,15 @@ class Model(object):
         self.rules=[]
         if rules!=None: self.addRules(rules)
 
+    def clone(self):
+        print self.inv
+
+        a=Model(self.name,self.ws,self.bs,self.s,self.t,self.w,self,self.i,self.a,self.ld,self.sv, rerollHits=self.rerollHits, rerollWounds=self.rerollWounds, rerollSaves=self.rerollSaves, rules=self.rules,modelType=self.type)
+        a.inv=self.inv
+
+            
+        return a
+        
     def addBasic(self,info):
         self.extraBasics.append(info)
     def hasRule(self,rule):
@@ -259,18 +285,29 @@ class Model(object):
                 return True
         return False
     def addRule(self,rule):
-
+        print ",",rule
         if self.hasRule(rule):
             return
 
-            
+        if rule.upper=="DA LUCKY STIKK":
+            self.ws+=1
         if rule=="Independent Character":            
             self.addBasic("Independent Character")
         if rule.upper()=="Mantle of the Laughing God".upper():
             self.addRules(["Stealth","Shrouded","Hit & Run"])
             self.addBasic("2+ cover save when moving (Mantle)")
             self.addBasic("Loses IC status (Mantle)")
+        if rule.upper()=="DAEMON":
 
+            if type(self.inv)==type("") and self.inv!="-" and len(self.inv)>0:
+                if int(self.inv[0])>5:
+                    self.inv="5+"
+            elif type(self.inv)==type(1):
+                if self.inv>5:
+                    self.inv="5+"
+            else:
+                self.inv="5+"
+                
         if rule=="Battle Focus" and self.type !="Eldar Jetbike":
             self.moveStats["run"]+="(Battle focus allows shoot+run in any order)"
         if rule=="Fleet":
@@ -297,7 +334,11 @@ class Model(object):
                 self.addRule(i)
         if rule.upper()=="DAEMON":
             self.addRule("Fear")
-            
+        if rule.upper()=="VETERANS OF THE LONG WAR":
+            self.addRule("Hatred (Space Marines)")
+            self.ld+=1
+            if self.ld>10: self.ld=10
+                         
         self.rules.append(rule)
 
     def addRules(self,rules):
@@ -344,7 +385,6 @@ class Model(object):
         out=[]
         for i in range(10):
             out.append(shootToWoundIndividual(self.s,(i+1)))
-
         return "| %11s "%"Toughness"+" ".join(["| %2d"%(n+1) for n in range(len(out))]) + " |\n"+"+"+"-"*13+"+----"*len(out)+"+\n"+"| %11s "%"Min roll"+" ".join(["| %2d"%(n) for n in out])+" |"
 
     def attacks(self):
@@ -364,7 +404,11 @@ class Model(object):
         meleeCount=0
         assaultWeapons=""
         weaponProfilesShooting=""
+        done=[]
         for w in self.weapons:
+            if w.name in done:
+                continue
+            done.append(w.name)
             if w.type=="shooting":
                 weaponProfilesShooting+=""" \\subsection{{{0.name}}}
                 \\begin{{description}}
@@ -392,6 +436,7 @@ class Model(object):
                     strength=strength+" (Total: %d)"%(news if news<=10 else 10)
                 elif strength.upper()=="USER":
                     strength="User (%d)"%self.s
+
                 assaultWeapons+=""" \\subsubsection{{{0.name}}}                
                 \\begin{{description}}
                 \\item[Strength]{s}
@@ -424,14 +469,16 @@ class Model(object):
         extraAttacks={True:"(Includes dual wielding bonus)",False:""}[meleeCount==1]
         if self.hasRule("Mandiblasters"):
             extraAttacks+="(Plus Mandiblaster attack)"
-        extraAttacks+={True:"(Remember to resolve \\textbf{Hammer of Wrath} wounds too)",False:""}["Hammer of Wrath" in self.rules]          
+        extraAttacks+={True:"(Remember to resolve \\textbf{Hammer of Wrath} wounds too)",False:""}["Hammer of Wrath" in self.rules]
+        if self.hasRule("Combat Familiar"):
+            extraAttacks="+(2 $\\times$  S4 AP- (combat familiar))"+extraAttacks
         if self.hasRule("Fleet"):
             extraAttacks+=" \\item[Fleet] allows one charge-range die to be rereolled"
         if self.hasRule("Rage"):
             extraAttacks+="(Rage: Add 2 attacks on charge, not 1)"
 
         profileAssault="""\\begin{{description}}
-        \\item[Attacks] {attacks} (Remember to add an attack if charging) {extraAttacks}
+        \\item[Attacks] {attacks} {extraAttacks} (Remember to add an attack if charging)
         \\item[Charge] {charge}
         \\item[Charge through terrain] {chargeTerrain}
         \\end{{description}}
@@ -450,14 +497,19 @@ class Model(object):
         weaponShort="""        \\begin{itemize}
         %s
         \end{itemize}"""%("\n".join(["\\item %s (%s)"%(n.name, n.type[0].upper()) for n in self.weapons ]))
+
+        weaponShort= "{ \\footnotesize \\begin{tabular}{p{1.6cm}lllp{3cm}}\\\\ \\textbf{Weapon} & \\textbf{Range} & \\textbf{Str} & \\textbf{Ap} \\\\ \\hline \n"
+        weaponShort+="\\hline \n".join([a.profileLatex() for a in self. weapons])
+        weaponShort+="\\end{tabular} }"
+
         if len(self.weapons)<1: weaponShort="This model has no weapons"
         specialRules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(sanitiseForLatex(i),r[i]) for i in self.rules]))
 
         if len(self.rules)<1: specialRules="This model has no special rules."
-        out= """\\documentclass[10pt,a4paper,twocolumn]{{article}}
+        out= """\\documentclass[8pt, a4paper,twocolumn]{{extarticle}}
         \\title{{{0.name}}}
         \\author{{{modelT}}} \\date{{}}
-        \\usepackage[width=7in,height=9in]{{geometry}}
+        \\usepackage[width=7.2in,height=10.2in]{{geometry}}
         \\usepackage{{multicol}}
         \\usepackage{{sectionbox}}
         \\usepackage{{rotating}}
@@ -475,9 +527,11 @@ class Model(object):
         \\item[Difficult Terrain] {dTerrain}
         \\item[Fallback] {fallback}
         \\item[Forego shooting to] {fast}
-        \\item[Notes] {notes}
-
         \\end{{description}}
+        \\subsection{{Notes}}
+        {notes}
+
+
         \\section{{Shooting}}
         \\begin{{description}}
         \\item[To hit:] {toHit} {0.rerollHits}
@@ -492,6 +546,7 @@ class Model(object):
 
         \\end{{document}}
         """.format(self,toHit=self.shootToHit(),shootingProfiles=weaponProfilesShooting, rules=specialRules, assaultProfile=profileAssault if self.classType!="vehicle" else "", extraBasic=extraBasic, weaponShort=weaponShort,modelT=self.type, moveD=self.moveStats["move"],dTerrain=self.moveStats["terrain"],fallback=self.moveStats["fallback"],notes=self.moveStats["notes"],fast=self.moveStats["run"],assaultheader="\\section{Assault/Melee}" if self.classType!="vehicle" else "", basictable=self.basicTable())
+
         return out
     def basicTable(self):
         return """ \\begin{{tabular}}{{p{{2ex}}p{{2ex}}p{{2ex}}p{{2ex}}p{{2ex}}p{{2ex}}p{{2ex}}p{{2ex}}p{{2ex}}p{{2ex}}}}
@@ -512,7 +567,7 @@ class Model(object):
 
 
 class Vehicle(Model):
-    def __init__(self, name, bs, front, side, rear,rules=None,modelType="Vehicle"):
+    def __init__(self, name, bs, front, side, rear,hp,rules=None,modelType="Vehicle"):
         """
         """
         if rules==None: rules=[]
@@ -524,13 +579,26 @@ class Vehicle(Model):
         self.bs=bs
         self.classType="vehicle"
         self.addRule("Relentless")
-#TODO: assult section when open-topped
-    def basicTable(self):
-        return """ \\begin{{tabular}}{{p{{4ex}}p{{4ex}}p{{4ex}}p{{4ex}}p{{12ex}}}}
-         Bs & Front & Side & Rear & Type  \\\\ \\hline
-         {0.bs} & {0.front} & {0.side} & {0.rear} & {typestuff}
-        \\end{{tabular}}""".format(self,typestuff=",".join(self.vehicletypes))
+        self.hp=hp
+        self.speeds=copy.deepcopy(vehicleMoves)
+        if "Fast" in self.vehicletypes[0]:
+            self.speeds["Combat Speed"]["shooting"]=vehicleMoves["Stationary"]["shooting"]
+            self.speeds["Cruising Speed"]["shooting"]="Up to 2 weapons full BS, all others snap shot"
+        self.moveStats["notes"]+="""
+        \\begin{tabular}{p{12ex}lp{22ex}}
+         \\textbf{Speed} & \\textbf{Distance} & \\textbf{Effect on shooting}  \\\\ \\hline \n"""
+        for i in ["Stationary", "Combat Speed", "Cruising Speed"]:
+            self.moveStats["notes"]+=i+" & "+self.speeds[i]["distance"] + " & " + self.speeds[i]["shooting"] +" \\\\ \\hline \n" 
+        self.moveStats["notes"]+=" \\end{tabular}"
+        
+#TODO: assault section when open-topped
 
+
+    def basicTable(self):
+        return """ \\begin{{tabular}}{{p{{4ex}}p{{4ex}}p{{4ex}}p{{4ex}}p{{4ex}}p{{12ex}}}}
+         Bs & Front & Side & Rear & HP & Type  \\\\ \\hline
+         {0.bs} & {0.front} & {0.side} & {0.rear} & {0.hp} & {typestuff}
+        \\end{{tabular}}""".format(self,typestuff=",".join(self.vehicletypes))
     def addRule(self,rule):
 
 
@@ -952,3 +1020,5 @@ if __name__=="__main__":
     #  LocalWords:  sScorpion
     #r.rules["Monstrous Creature"]="SHOOTING: Monstrous Creatures can fire up to two of their weapons each Shooting phase - they must, of course, fire both of them at the same target. SPECIAL RULES: Monstrous Creatures have the fear, Hammer of Wrath, Move Through Cover, Relentless and Smash special rules."
     #r.save()
+
+    

@@ -105,9 +105,9 @@ class Rules(object):
             for j in i.childNodes:
 
                 if len( j.childNodes)!=0 and  j.childNodes[0].nodeType==j.TEXT_NODE:
-
+                    
                     r= i.attributes["name"].value
-
+                    print "\t\t",r
                     b="??"
                     try:
                         b=i.attributes["book"].value
@@ -125,6 +125,7 @@ class Rules(object):
                     else:
                         added+=1
                         self.rules[r]=k
+                        print "Adding: %s"%r
         return {"added":added,"dupes":dupes,"mismatched":mismatched,"problems":mismatchD}
 
 def diff (a,b):
@@ -186,7 +187,7 @@ if __name__ == '__main__':
     #     #break
     # print "-"
     #    print r["Assault"]
-    #loadHelper(r,"/home/james/bin/battlescribe_/previous_version/catalogues/Eldar.cat")
+    loadHelper(r,"/home/james/tmp/Orks - Codex.cat")
     # for i in r:
         
     #     print """[%s] %s \n"""%(i,r[i])

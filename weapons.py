@@ -19,6 +19,7 @@ singingSpearDuo=[Weapon("Singing Spear (melee)","-","X","-","melee",specialRules
 
 
 forceStave=Weapon("Force Stave","-","+2",4,"melee",specialRules=["Melee","Force","Concussive","Instant Death"])
+forceSword=Weapon("Force Sword","-","User",3,"melee",specialRules=["Melee","Force"])
 
 
 heavyBolter=Weapon("Heavy Bolter",36,5,4,"shooting",specialRules=["Heavy 3"])

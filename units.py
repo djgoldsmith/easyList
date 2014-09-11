@@ -92,22 +92,23 @@ class SpaceMarine(Model):
 class Ravenwing(SpaceMarine):
     def __init__(self,name="RavenWing"):
         Model.__init__(self,name,4,4,4,5,1,4,1,8,"3+",modelType="Bike")
-        self.addRules(["And They Shall Know No Fear", "Ravenwing Combat Squads", "Scouts", "Hit & Run", "Grim Resolve"])
+        self.addRules(["And They Shall Know No Fear", "Ravenwing Combat Squads", "Scouts", "Hit & Run", "Grim Resolve","Teleport Homer"])
         self.addWeapon(weapons.boltPistol.tl())
-        self.addWeapon(weapons.meltaGun)
+        #self.addWeapon(weapons.meltaGun)
         self.addWeapon(weapons.fragGrenade)
-        self.addWeapon(weapons.krakGrenade)        
+        self.addWeapon(weapons.krakGrenade)
+        self.addWeapon(weapons.plasmaGun)        
         
 
 class Librarian(SpaceMarine):
-    def __init__(self,name="Librarian"):
+    def __init__(self,name="Librarian", ml=2):
         SpaceMarine.__init__(self,name)
         self.ws=5
         self.w=2
         self.a=2
         self.ld=10
         self.rules.remove("Combat Squads")
-        self.addRules(["Independent Character", "Psyker ML2"])
+        self.addRules(["Independent Character", "Psyker ML%d"%ml])
 
 class Avatar(Model):
     def __init__(self, name="Avatar of Khaine", fastShot=False, crushingBlow=False):

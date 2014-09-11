@@ -29,6 +29,9 @@ def shoot(a,b, squadSize=1, specials=[]):
     reRolls=[]
     if "fortune" in specials:
         reRolls.append("allsaves")
+    if "enervate" in specials:
+        b=b.clone()
+        b.t-=1
     if b.hasRule("Mantle of the Laughing God"):
         reRolls.append("cover")
     toHit=a.shootToHit()
@@ -46,11 +49,14 @@ def shoot(a,b, squadSize=1, specials=[]):
         print "\twounds on %s"%woundOn
         sniper=a.hasRule("Sniper") or w.hasRule("Sniper")
         bladestorm=w.hasRule("Bladestorm")
-        twinlinked=w.hasRule("Twinlinked") or "guide" in specials
+        twinlinked=w.hasRule("Twin-linked") or "guide" in specials
         if "doom" in specials: reRolls.append("failedWound") 
         d=diceStats.genShotStatsBasic(a.bs, s,b.t, save=rollStrip(b.sv), inv=rollStrip(b.inv), sniper=sniper, bladestorm=bladestorm, twinlinked=twinlinked,cover=cover,reRoll=reRolls)
-
-        print "\tChance to wound:", d.percent("WOUND")*roughInt(w.shots),"\n\tFor Squad of size %d: %0.2f"%(squadSize,d.percent("WOUND")*roughInt(w.shots)*squadSize)
+        shots=roughInt(w.shots if w.shots!="D6+1" else 4)
+        woundChance=1.0-(1.0-d.percent("WOUND"))**shots
+        woundChanceSquad=1.0-(((1.0-d.percent("WOUND"))**shots)**squadSize)
+        print "\tChance to wound:", woundChance,"\n\tFor Squad of size %d: %0.2f"%(squadSize,woundChanceSquad)
+        print "\tLikely number of wounds for squad:",d.percent("WOUND")*shots*squadSize
         #print d
     print "-"*80
 

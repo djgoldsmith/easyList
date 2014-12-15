@@ -1,0 +1,6 @@
+* Vital [/] 
+** TODO Properly package so setup.py doesnt install stuff at random
+
+* Bugfix [/]
+
+* Wishlist [/]

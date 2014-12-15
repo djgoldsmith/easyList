@@ -1,0 +1,6 @@
+* Version 0.1 (Or whatever)
+
+
+** Pieces.py
+  - Added Docstrings for Weapon
+  - Changed weapon *range* parameter to be more sensible *weprange*

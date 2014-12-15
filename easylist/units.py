@@ -1,3 +1,7 @@
+"""
+Classes to describe Models and Units
+"""
+
 from ruleGrab import Rules
 from pieces import Model, Weapon
 import weapons

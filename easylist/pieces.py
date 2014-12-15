@@ -1,3 +1,10 @@
+"""
+Definitions for model and weapon classes
+
+.. version:: 0.1
+"""
+
+
 from ruleGrab import Rules
 import copy, StringIO
 #from versus import melee
@@ -34,7 +41,7 @@ vehicleMoves={"Stationary":{"distance":"0\"","shooting":"All weapons, full BS"},
               "Cruising Speed":{"distance":"12\"","shooting":"Snap shots on all weapons"}}
               
               
-              
+
 
 for i in moveStatLines:
 
@@ -54,8 +61,14 @@ def sanitiseForLatex(n):
 
 class Weapon(object):
     """
+    Representation of a 40k weapon.
+
+
+    .. since:: 0.1
+    
+        - Changed range to weprange
     """
-    def __init__(self, name, range, strength,ap, weaponType, shots=1,specialRules=None,hitExtras="",woundExtras="", wielder=None):
+    def __init__(self, name, weprange, strength,ap, weaponType, shots=1,specialRules=None,hitExtras="",woundExtras="", wielder=None):
         """
         
         Arguments:
@@ -70,7 +83,7 @@ class Weapon(object):
 
         if not self.type in validWeaponTypes:
             raise TypeError("Weapon type must be one of %s, can't be %s"%(str(validWeaponTypes),self.type))
-        self.range=range
+        self.weprange=weprange
         self.name=name
         if type(strength)==type(" ") and wielder!=None and strength.upper()=="USER":
             self._strength=wielder.s
@@ -87,7 +100,7 @@ class Weapon(object):
         self.hitExtras=hitExtras
         self.woundExtras=woundExtras
     def profileLatex(self):
-        out=self.name +" & "+str(self.range)+" & " +str(self._strength)+" & "+str(self._ap)+" & "+", ".join(self._specialRules)+ "\\\\"
+        out=self.name +" & "+str(self.weprange)+" & " +str(self._strength)+" & "+str(self._ap)+" & "+", ".join(self._specialRules)+ "\\\\"
         return out
 
     def tl(self):
@@ -96,7 +109,7 @@ class Weapon(object):
         return c
         
     def clone(self):
-        return Weapon(self.name, self.range, self._strength, self._ap, self.type, shots=self.shots, specialRules=list(self._specialRules),woundExtras=self.woundExtras,wielder=None)
+        return Weapon(self.name, self.weprange, self._strength, self._ap, self.type, shots=self.shots, specialRules=list(self._specialRules),woundExtras=self.woundExtras,wielder=None)
                       
         
     def hasRule(self,thing):
@@ -423,7 +436,7 @@ class Model(object):
                 \\subsubsection{{Weapon Rules}}
                 {rules}
                 \\hrule
-                """.format(w,rules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(i,r[i]) for i in w._specialRules])),wounding=w.woundProfile(), assault=w.canShootAfterMoving(), range=w.range, apExtra={True:"/(2 on a 'to wound' roll of 6 - Rending)", False:""}[w.hasRule("Rending")])
+                """.format(w,rules="\\begin{description} %s \\end{description}"%("\n".join(["\\item[%s] %s"%(i,r[i]) for i in w._specialRules])),wounding=w.woundProfile(), assault=w.canShootAfterMoving(), range=w.weprange, apExtra={True:"/(2 on a 'to wound' roll of 6 - Rending)", False:""}[w.hasRule("Rending")])
             if not w.hasRule("Grenade") and (w.type=="melee" or w.hasRule("Pistol")):
                 meleeCount+=1
             if w.hasRule("Specialist Weapon"):
